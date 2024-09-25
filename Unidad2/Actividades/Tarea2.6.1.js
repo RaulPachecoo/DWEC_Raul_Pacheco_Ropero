@@ -1,134 +1,51 @@
-// 1- Will alert be shown?
+// 1- What are the final values of all variables a, b, c and d after the code below?
 
-if ("0") {
-    alert( 'Hello' );
-}
+let a = 1, b = 1;
+let c = ++a; // Devuelve 2.
+let d = b++; // Devuelve 1 y la b pasaría  a valer 2.
 
-// Sí se muestra esta la alerta, porque "0" se considera como true.
+// 2- What are the values of n and x after the code below?
 
-/* 2- The name of JavaScript.- Using the if..else construct, write the code which asks: ‘What
-is the “official” name of JavaScript?’
+let n = 2;
+let x = 1 + (a *= 2);
+
+// El nuevo valor de n = 4 y el valor de x = 5.
+
+
+// 3- What are the results of these expressions?
+
+5 > 4 // True
+"apple" > "pineapple" // False
+"2" > "12" // True
+undefined == null // True
+undefined === null // False
+null == "\n0\n" // False
+null === +"\n0\n" // False
+"" + 1 + 0 // "10"
+"" - 1 + 0 // -1
+true + false // 1
+6 / "3" // 2
+"2" * "3" // 6
+4 + 5 + "px" // "9px"
+"$" + 4 + 5 // "$45"
+"4" - 2 // 2
+"4px" - 2 // NaN
+" -9 " + 5 // " -9 5"
+" -9 " - 5 // -14
+null + 1 // 1
+undefined + 1 // NaN
+" \t \n" - 2 // -2
+
+/* 4- Here’s a code that asks the user for two numbers and shows their sum. It works incorrectly.
+The output in the example below is 12 (for default prompt values). Why? Fix it. The result
+should be 3
 */
 
-let answer = prompt("What is the “official” name of JavaScript?");
+let l = prompt("First number?", 1);
+let k = prompt("Second number?", 2);
+alert(l + k); // 12
 
-if(answer == "ECMAScript"){
-	alert("Right!")
-} else{
-	alert("You don't know? ECMAScript!")
-}
-
-/* 3- Show the sign. Using if..else, write the code which gets a number via prompt and
-then shows in alert:
-◦ 1, if the value is greater than zero,
-◦ -1, if less than zero,
-◦ 0, if equals zero.
-In this task we assume that the input is always a number.
-*/
-
-let num = Number(prompt("Introduce un número: ")); 
-
-if(num > 0){
-	alert(1); 
-}else{
-	if(num == 0){
-  	alert(0); 
-  } else{
-  	if(num < 0){
-    	alert(-1); 
-    } 
-  }
-}
-
-
-// 4- Rewrite 'if' into '?'
-
-let result;
-if (a + b < 4) {
- result = 'Below';
-} else {
- result = 'Over';
-}
-
-//let result = (a + b < 4) ? 'Below' : 'Over';
-
-/* 5- Rewrite 'if..else' into '?'. For readability, it’s recommended to split the code into multiple
-lines.
-*/
-
-let message;
-if (login == 'Employee') {
- message = 'Hello';
-} else if (login == 'Director') {
- message = 'Greetings';
-} else if (login == '') {
- message = 'No login';
-} else {
- message = '';
-}
-
-/*
-let message = 
-    login == 'Employee' ? 'Hello' :
-    login == 'Director' ? 'Greetings' :
-    login == '' ? 'No login' :
-    '';
-*/
-
-// 6- Write the code using if..else which would correspond to the following switch:
-
-switch (browser) {
-    case 'Edge':
-    alert( "You've got the Edge!" );
-    break;
-    case 'Chrome':
-    case 'Firefox':
-    case 'Safari':
-    case 'Opera':
-    alert( 'Okay we support these browsers too' );
-    break;
-    default:
-    alert( 'We hope that this page looks ok!' );
-   }
-
-/*
-if(browser == "Edge"){
-    alert( "You've got the Edge!" );
-}else{
-   if(browser == "Chrome" || browser == "Firefox" || browser == "Safari" || browser == "Opera"){
-      alert( 'Okay we support these browsers too' );  	
- } else{
-      alert( 'We hope that this page looks ok!' );
- }
-}
- */
-
-// 7- Rewrite the code below using a single switch statement:
-
-let a = +prompt('a?', '');
-if (a == 0) {
- alert( 0 );
-}
-if (a == 1) {
- alert( 1 );
-}
-if (a == 2 || a == 3) {
- alert( '2,3' );
-}
-
-/*
-switch (a) {
-    case 0:
-        alert(0);
-        break;
-    case 1:
-        alert(1);
-        break;
-    case 2:
-    case 3:
-        alert('2,3');
-        break;
-    default:
-        break;
-}
+/* El resultado es 12 porque reconoce los datos como String.
+Para solucionarlo basta con hacer un casting a los datos. Es decir añadir Number(prompt("First number?", 1))
+ y Number(prompt("Second number?", 2)).
 */
