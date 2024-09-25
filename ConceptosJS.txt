@@ -1,0 +1,145 @@
+//VARIABLES
+
+let fechaEntrada;
+let numeroMaximo = 500;
+let numeroTotal = 1000;
+let numeroMinimo = 5;
+let cadena1 = "un texto"; 
+let cadena2 = cadena1; 
+cadena2 = "adios";
+let registrado = true; 
+let usuario = {
+	nombre: "maximo", 
+  edad : 25
+}; 
+
+let asignaturas = ["DEWC", "DIW", "DWES", "ED", "EIE"]; 
+let asignaturas2 = [
+  DWEC = ["tema1", "tema2"],
+  DIW = ["tema1", "tema2"]
+  
+];
+
+let nuevaCadena = String(numeroMinimo); 
+
+console.log(`La suma de ${numeroMaximo} y ${numeroTotal} es ${numeroMaximo + numeroTotal}`);
+
+console.log(usuario.nombre); 
+console.log(asignaturas2[0][0]); 
+
+console.log(typeof(cadena2), typeof(asignaturas), typeof(usuario)); 
+
+console.log(nuevaCadena, typeof(nuevaCadena), numeroMinimo+Number(nuevaCadena)); 
+
+
+----------------------------------------------------------------------------------------------------------
+//OPERADORES
+
+let a=b=c=d=n=5; 
+
+let c=4 (a-5); 
+console.log(n++); 
+console.log (n); 
+
+console.log (0==false); 
+console.log(""===false); 
+
+let a = true; 
+let b = false; 
+let c = 3; 
+let d = 4; 
+
+console.log (a || b); 
+(c>0 && d==3) || console.log ("hola"); 
+
+console.log(a && b); 
+
+(c>0 && d==3) && console.log ("adios");
+
+
+console.log(!a); 
+(!(c>0 && d==3) || b) && console.log ("codigo del segundo and"); 
+
+
+//nulish
+let valor = 0; 
+
+console.log(valor || 100); 
+console.log(valor ?? 100); 
+
+
+
+/*
+console
+prompt
+alert
+*/
+/*
+if (confirm("aa")){
+console.log("dentro del if")
+}
+*/
+
+--------------------------------------------------------------------------------------------------------------------------
+// CONDICIONALES
+
+let a = 5,
+	b = 10; 
+  
+if (a>5 && b==10){
+	console.log("condicion 1"); 
+}else{
+	if(1){
+  	console.log("condicion 2"); 
+  }else{
+  	console.log("otra"); 
+  }
+}
+
+
+let anyos = prompt("Dime tu edad"); 
+let mayoria_edad = (anyos>=18); 
+let fechoria = confirm("¿Has cometido alguna fechoría?"); 
+
+if(mayoria_edad && fechoria){
+	let carcel = true; 
+	console.log("Te vas a pasar algún tiempo en la sombra"); 
+}else{
+	if(fechoria){
+  	let reformatorio = true; 
+    console.log ("Te vas al correccioal de menores"); 
+  }else{
+  console.log("Sigue tu vida"); 
+  }
+ 
+}
+
+
+
+(mayoria_edad && fechoria) ? console.log("Te vas a pasar un tiempo a la sombra") : (fechoria) ? console.log("Te vas al correccional de menores") : console.log("Sigue tu vida");  
+
+//SWITCH
+
+let calificacion = Number(prompt("¿Qué nota has sacado?"));
+switch (calificacion) {
+  case 5:
+    console.log("Tienes que poner empeño");
+    break;
+  case 6:
+    console.log("Tienes que poner empeño");
+    break;
+  case 7:
+    console.log("Tienes que poner empeño");
+    break;
+  case 8:
+    console.log("Tienes que poner empeño");
+    break;
+  case 9:
+    console.log("Tienes que poner empeño");
+    break;
+  case 10:
+    console.log("Enhorabuena");
+    break;
+  default:
+    console.log("Estás suspenso");
+}
