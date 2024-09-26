@@ -143,3 +143,76 @@ switch (calificacion) {
   default:
     console.log("Estás suspenso");
 }
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+// LOOPS
+
+let i = 0;
+
+
+while(i<10){
+	console.log(i++); 
+}
+
+
+
+
+do{
+	console.log(i--); 
+}while(i>0); 
+
+
+
+let suma = 0; 
+while(1){
+	suma++;
+  if(suma==5) break; 
+}
+
+
+
+for(let i=0; i<10; i++){
+	if(i%2 == 0) continue;
+  console.log(i); 
+}
+
+
+
+for(let i = 0; i<10; i++){
+	console.log("i vale " + i); 
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+//MATRICES
+
+let matriz = ["DWEC", "DIW", "DWES", "ED"]; 
+
+let objeto = {
+	nombre: "pepe",
+  dni: 1234
+}; 
+
+for(let i = 0; i<matriz.length; i++){
+	console.log(matriz[i]); 
+}
+
+for(let elemento of matriz){
+	console.log(elemento); 
+}
+
+for(let elemento in objeto){
+	console.log(elemento); 
+}
+
+for(let i=0; i<Object.keys(objeto).length; i++){
+	console.log(objeto); 
+}
+
+
+for(let i=0; i<Object.keys(objeto).length; i++){
+	let elemento = Object.keys(objeto)[i]; 
+	console.log(objeto[elemento]); 
+}
