@@ -395,3 +395,125 @@ console.log(calculadora(2,3,suma));
 console.log(calculadora(100,2,(a,b)=>(a/b)));
 
 */
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
+
+// RECURSIVIDAD
+
+function potencia(x, n){
+	//return (x**n);
+  	let resultado = 1; 
+  	for(let i = 0; i<n; i++){
+      resultado *= x;  
+    }
+  	return resultado; 
+}
+
+console.log(potencia(2,3)); 
+
+function potenciaRecursiva(x, n){
+  if(n == 1){
+    return x; 
+  }else{
+    return (x * potenciaRecursiva(x, n-1)); 
+  }
+}
+
+console.log(potenciaRecursiva(2, 3)); 
+
+---------------------------------------------------------------------------------------------------------------------------------
+// REST PARAMETERS
+
+function sumarTodo(...numeros){
+  let acumulado = 0; 
+  for(let num of numeros){
+    acumulado += num; 
+  }
+  return acumulado; 
+}
+
+console.log(sumarTodo(1, 2, 7, 109, 28, 99, 100, 23, 67)); 
+
+
+function concatena(...palabras){
+  let cocatenacion = ""; 
+  for(let palabra of palabras){
+    cocatenacion += palabra; 
+  }
+  return cocatenacion; 
+}
+
+console.log(concatena("hola", "adios", "muy buenas")); 
+
+
+function restaTotal(numeroInicial, ...numeros){
+  for(let n of numeros){
+    numeroInicial -= n; 
+  }
+  return numeroInicial; 
+}
+
+function restaTotalRecursiva(numeroInicial, ...numeros){
+  if(numeros.length == 1){
+    return (numeroInicial -= numeros[0]); 
+  }else{
+    numeroInicial -= numeros.pop(); 
+    return (restaTotalRecursiva(numeroInicial,...numeros)); 
+  }
+}
+let numeroInicial = 100; 
+console.log(restaTotal(numeroInicial, 20, 10, 5)); 
+console.log(restaTotalRecursiva(numeroInicial, 20, 10, 5)); 
+
+
+/*
+function resta(){
+  let numeroInicial = arguments[0];
+  let numeros = []; 
+  for(let i = 1; i<arguments.length; i++){
+    numeros.push(arguments[i]); 
+  }
+    
+  for(let n of numeros){
+    numeroInicial -= n; 
+  }
+  return numeroInicial;
+  
+}
+*/
+function resta(){
+  let matrizArgumentos = Array.from(arguments); 
+  let total = matrizArgumentos[0]; 
+  for(let i = 1; i<matrizArgumentos.length; i++){
+    total -= matrizArgumentos[i]; 
+  }
+  return total; 
+  
+}
+console.log(resta(100, 20, 10, 5)); 
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+// NESTED FUNCTIONS
+
+function externa(){
+  	console.log("Exerna"); 
+  	function interna(){
+      console.log("Interna"); 
+    }
+  	interna(); 
+}
+externa(); 
+
+
+
+(function () {console.log("Hola alumnos"); }) (); 
+
+(function(quien){
+  console.log(`soy ${quien}`); 
+}) ("Pepe"); 
+
+
+
+
