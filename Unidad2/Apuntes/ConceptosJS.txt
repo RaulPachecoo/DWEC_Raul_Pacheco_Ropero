@@ -514,6 +514,150 @@ externa();
   console.log(`soy ${quien}`); 
 }) ("Pepe"); 
 
+----------------------------------------------------------------------------------------------------------------------------------------
+/* scope
+	- global
+    - function
+    - block
+
+closure
+*/
+
+let nombre = "manolo"; 
+function saludar(){
+	let nombre = "pepe"; 
+	return function(){
+     	console.log(nombre);  
+    }
+}
+let nombre = "felipe"; 
+saludar()(); 
 
 
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+// MATRICES
+
+let comida = ["espaguetis", "macarrones", "pizza"]; 
+let m1 = [true, 25, "mangos", function(){console.log("hola");}]; 
+let mb1 = [ 
+  ["macarrones", "pizza", "espaguetis"],
+  ["tortilla", "kebab", "montadito"],
+  [true, false]
+]; 
+
+let mb2 = [
+  {nombre:"pepe", edad:25},
+  {nombre: "lucia", edad: 31},
+  {nombre: "felipe", edad: 19}
+]; 
+
+let m2 = []; 
+let m3 = new Array(); 
+let m4 = new Array(1, 2, 3); 
+let m5 = new Array(5); 
+let m6 = new Array(
+  	new Array(1,2,3),
+  	new Array(true, false),
+  	new Array(()=>"hola", ()=> "adios")
+); 
+
+// accesing
+
+console.log(comida[0], mb1[0][1], mb2[0].edad); 
+console.log(comida[comida.length-1], comida[comida.at(-1)]); 
+
+// inserting elements
+let m6 = [1,2,3]; 
+let m7 = [...m6, 4, 5, 6]; 
+console.log(m7); 
+
+// by using splice method
+
+m6.splice(2, 1, 4); 
+console.log(m6); 
+
+
+// by using push
+m6.push(5); 
+console.log(m6); 
+
+m6.push(9); 
+console.log(m6); 
+
+// by using unshift
+
+m6.unshift(10); 
+
+console.log(m6); 
+
+
+// removing elements
+// pop
+
+m6.pop(); 
+console.log(m6); 
+
+//shift
+
+console.log(m6.shift(), m6); 
+
+// stack
+
+for(let i = 10; i<15; i++){
+  m6.push(i); 
+}
+
+console.log(m6); 
+m6.pop(); 
+console.log(m6); 
+m6.pop(); 
+console.log(m6); 
+
+
+// qeue -> FIFO
+
+for(let i = 10; i<15; i++){
+  m6.unshift(i); 
+}
+
+console.log(m6); 
+m6.pop(); 
+console.log(m6); 
+
+
+// iterating
+
+// foreach
+// m6.forEach(elemento, indice, matriz)
+m6.forEach((elemento, indice, matriz) => {
+  console.log("El elemento " + elemento + " está en la posición " + indice);
+});
+
+
+let mb1 = [ 
+  ["macarrones", "pizza", "espaguetis"],
+  ["tortilla", "kebab", "montadito"],
+  [true, false]
+]; 
+
+mb1.forEach((fila, indiceFila) => {
+  fila.forEach((elemento, indiceElemento) => {
+    console.log("El elemento " + elemento + " está en la fila " + indiceFila + " y en la posición " + indiceElemento);
+  });
+});
+
+
+let mb1 = [ 
+  ["macarrones", "pizza", "espaguetis"],
+  ["tortilla", "kebab", "montadito"],
+  [true, false]
+]; 
+
+for(let fila of mb1){
+  for(let elemento of fila){
+   	console.log(elemento);
+  }
+}
 
