@@ -563,6 +563,7 @@ let m6 = new Array(
   	new Array(()=>"hola", ()=> "adios")
 ); 
 
+--------------------------------------------------------------------------------------------------------------------
 // accesing
 
 console.log(comida[0], mb1[0][1], mb2[0].edad); 
@@ -592,7 +593,7 @@ m6.unshift(10);
 
 console.log(m6); 
 
-
+-----------------------------------------------------------------------------------
 // removing elements
 // pop
 
@@ -626,7 +627,7 @@ console.log(m6);
 m6.pop(); 
 console.log(m6); 
 
-
+-------------------------------------------------------------------------------------------------------------
 // iterating
 
 // foreach
@@ -660,4 +661,404 @@ for(let fila of mb1){
    	console.log(elemento);
   }
 }
+
+-------------------------------------------------------------------------------------------------------
+// get information about an array
+
+let arr1 = [1,2,3]; 
+console.log(typeof(arr1)); 
+console.log(Array.isArray(arr1)); 
+
+
+let frutas = ["mango", "aguacate", "pera", "chirimoya", "manzana", "pera"]; 
+
+//console.log(frutas.indexOf("pera"), frutas[4], frutas.includes("manzana"), frutas.lastIndexOf("pera")); 
+
+
+// extract, insert and replace elements in a array
+// splice extracts
+
+//let frutas2 = frutas.splice(1,3); 
+//console.log(frutas, frutas2); 
+
+/*frutas.splice(1,3,"naranja", "pomelo");
+console.log(frutas); 
+*/
+
+//inserts
+/*frutas.splice(3,0,"sandía", "melón"); 
+console.log(frutas); */
+
+
+//slice returns with no change at original array
+/*let frutas2 = frutas.slice(1,3); 
+console.log(frutas, frutas2);*/
+
+let frutas2 = frutas.slice(-4,-1); 
+console.log(frutas, frutas2); 
+
+-----------------------------------------------------------------------------------------------------
+//compare arrays
+
+let arr1 = [1,[2,3]]; 
+let arr2 = arr1;  
+//let arr2 = [1,2,3]; 
+let arr3 = [1,2,3]; 
+const arr4 = [1, true, "hola", undefined, null, function(){return "hola"}];
+const arr5 = [1, true, "hola", null, null, null];
+
+console.log(JSON.stringify(arr4)); 
+console.log(JSON.stringify(arr5)); 
+
+
+/*
+console.log(arr1 == arr2); 
+arr2=[4,5,6]; 
+console.log(arr1, arr2, arr1==arr3);
+*/
+
+console.log(arr1.toString() == arr3.toString());
+console.log(JSON.stringify(arr1) == JSON.stringify(arr3)); 
+
+---------------------------------------------------------------------------
+
+//compare arrays
+
+let arr1 = [1,2,3]; 
+let arr2 = arr1;  
+let arr3 = [1,2,3]; 
+const arr4 = [1, true, "hola", undefined, null, function(){return "hola"}];
+const arr5 = [1, true, "hola", null, null, null];
+let iguales = true; 
+
+if (arr4.length !== arr5.length) {
+  iguales = false; 
+} else {
+  for (let i = 0; i < arr4.length; i++) {
+    if (arr4[i] !== arr5[i]) {  
+      iguales = false;
+      break;  
+    }
+  }
+}
+console.log(iguales);
+
+---------------------------------------------------------------------------------------
+// locate elements 
+// indexOf compares my using ===
+
+let frutas = [
+  {nombre: "manzana", variedad: "verde", existencias: 10},
+  {nombre: "manzana", variedad: "golden", existencias: 10},
+  {nombre: "pera", variedad:"conferencia", existencias: 3},
+  {nombre: "pera", variedad:"blanquilla", existencias: 7},
+  {nombre: "caqui", variedad: "persimon", existencias: 5},
+]
+
+console.log(frutas.findIndex(elemento => elemento.nombre == "manzana" && elemento.existencias >= 5 ));
+console.log(frutas.findLastIndex(elemento => elemento.nombre == "manzana"));
+
+
+console.log(frutas.find(elemento => elemento.nombre == "manzana" && elemento.existencias >= 5)); 
+
+console.log(frutas.filter(elemento => elemento.existencias >= 5)); 
+
+
+-----------------------------------------------------------------------------------------
+// perform calculations
+
+let mat1 = [1,2,3,4,5]; 
+
+console.log(mat1.map(x => x*3), mat1); 
+
+let frutas = [
+  {nombre: "manzana", variedad: "verde", existencias: 3},
+  {nombre: "manzana", variedad: "golden", existencias: 10},
+  {nombre: "pera", variedad:"conferencia", existencias: 3},
+  {nombre: "pera", variedad:"blanquilla", existencias: 7},
+  {nombre: "caqui", variedad: "persimon", existencias: 5},
+]
+
+console.log(frutas.filter(elemento => elemento.existencias<5).map(elemento=>elemento.existencias+4))
+
+
+
+let mat1 = [1,2,3,4,5,20,20,20]; 
+
+console.log(mat1.map(x => x*3), mat1); 
+console.log(mat1.reduce((total,actual)=>total+actual));
+console.log(mat1.filter(elemento=>elemento>10).reduce((total, actual)=>total+actual)); 
+
+--------------------------------------------------------------------------------------------------------
+// concatenate elements
+
+let razas = ["chiuaua", "pastor aleman", "fox terrier"]; 
+console.log(razas.join(), razas); 
+
+let cadena = "gato,perro,hurón,periquito"; 
+console.log(cadena.split(",")); 
+
+-----------------------------------------------------------------------------------------------------------------
+// Converting
+
+let mat1 = ["gato", "perro", "hurón", "serpiente"]; 
+
+console.log(mat1.join()); 
+
+----------------------------------------------------------------------------
+// sorting
+
+let mat2 = [4,25,17,1,41,2,29]; 
+console.log(mat2.sort()); 
+console.log(mat1.sort()); 
+console.log(mat2.sort((a,b) => a-b)); 
+
+let ordenaNumeros=(a,b)=>{
+  return (a<b) ? 1 : (a==b ? 0 : 1); 
+}
+
+//console.log(mat2.sort(ordenaNumeros())); 
+
+----------------------------------------------------------------------------
+// reverse
+
+console.log(mat2.reverse()); 
+
+-----------------------------------------------------------------------------
+
+// fill with values
+let mat3 = new Array(10); 
+mat3.fill(0); 
+console.log(mat3); 
+
+console.log(mat3.fill(-5, 1, 3)); 
+console.log(mat3.fill(20,4)); 
+console.log(mat3.fill(33, -3)); 
+
+-------------------------------------------------------------------------------------------------------------------------------------
+// unstructure
+
+function imprimir(a,b,c){
+  console.log(a,b,c); 
+}
+
+let mat1 = ["pepe", "jose", "maría"]; 
+imprimir(...mat1); 
+
+//2
+
+const arr1 = [1,2,3,4]; 
+
+const [num1, num2, ...resto] = arr1; 
+
+console.log(num1, num2, resto); 
+
+-------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------
+
+// Objects
+// Create
+
+let persona = {}; 
+let persona2 = {
+	nombre: "procopio", 
+  	edad: 27
+}; 
+// Complex object
+let persona3 = {
+  	nombre: "apolinar",
+  	edad: 44, 
+  	saluda: function(){
+      cnsole.log("hola"); 
+    }, 
+  	
+  	despidete(texto){
+      console.log(texto); 
+    },
+  	//pregunta:(texto)=>(console.log(texto)
+}
+  	
+// With a constructor
+
+function Perro(tipo, nombre){
+  this.nombre = nombre; 
+  this.tipo = tipo;
+  this.ladrar = function(){
+    console.log("guau"); 
+  };
+}
+
+let miPerro = new Perro("foxterrier", "perico");
+
+// Another
+const {raza, ...otros} = {
+  raza: "podenco",
+  edad: 5,
+  peso:15
+}; 
+
+// Factory function
+// a function that returns a object
+function construyeAnimal(nombre,edad){
+  return{
+    nombre: nombre,
+    edad: edad
+  }; 
+}
+let miAnimal = construyeAnimal("perico", 3); 
+console.log(miAnimal); 
+
+// another way of doing the same
+
+let crearAnimal = (nombre,edad)=>(
+	{nombre, edad}
+); 
+
+let miAnimal2 = crearAnimal("fufo", 5); 
+console.log(miAnimal2); 
+
+------------------------------------------------------------------------------------------------------------------
+// Access object properties
+
+// by using a dot
+console.log(persona2.nombre); 
+console.log(persona3.saluda()); 
+console.log(persona2["nombre"]); 
+
+let prop = prompt("a que propiedad quieres acceder"); 
+console.log(persona2[prop]); 
+
+
+-----------------------------------------------------------------------------------------------------------------------
+// Defining new properties after the object is created
+console.log(persona); 
+persona.nombre = "hilario"; 
+persona["direcciónCompleta"] = "calle pez, nº3"; 
+console.log(persona); 
+
+Object.defineProperty(persona, 'profesion',{
+	value: "ascensorista",
+	writable: false, // value can't be changed
+   	enumerable: false, // can't be iterated
+   	configurable: false // can't be removed
+}); 
+
+console.log(persona.profesion); 
+
+persona.saluda = ()=>{console.log("buenos días")}; 
+console.log(persona.saluda()); 
+let diAdios = function(){
+  console.log("hasta otra"); 
+}
+persona.despidete = diAdios; 
+console.log(persona.despidete()); 
+
+----------------------------------------------------------------------------------------------------------------------
+
+ // Check if a property exists
+
+console.log(persona.peso); 
+console.log(Object.hasOwn(persona,"peso")); 
+console.log("peso" in persona); 
+
+---------------------------------------------------------------------------------------------------------------------
+ 
+// Prevent objects from being changed
+
+Object.freeze(persona); 
+console.log(persona.profesion); 
+persona.profesion = "practicante"; 
+console.log(persona.profesion); 
+
+-------------------------------------------------------------------------------------------------------------------------
+
+// Delete property
+
+persona.altura = 180; 
+console.log(persona.altura); 
+delete persona.altura; 
+console.log(persona.altura); 
+console.log(Object.hasOwn(persona, "altura")); 
+
+
+
+
+Object.seal(persona); // It dosen't allow to extend or delete
+console.log(persona.profesion); 
+delete persona.altura; 
+
+
+Object.preventExtensions(persona); // It doesn't allow to extend. 
+
+persona.altura = 180; 
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Object.defineProperty(persona, 'hablar',{
+  value: function(texto){
+    console.log(texto); 
+  },
+  writable: true, // value can't be changed
+  enumerable: false, // can't be iterated
+  configurable: false // can't be removed
+}); 
+
+--------------------------------------------------------------------------------------------------------------------------
+// Iterator
+
+let persona = {
+	profesion: "papa",
+  	nombre: "procopio",
+  	saluda(texto){
+      console.log(texto); 
+    }
+}; 
+
+console.log(persona[Symbol.iterator]); 
+// for .. in -> non iterables (object)
+// for .. of -> iterables (arrays)
+// comprobar for in con array
+
+for(let elemento in persona){
+  console.log(elemento, persona[elemento]); 
+}
+
+let valores = Object.values(persona); 
+for(let i = 0; i<valores.length; i++){
+  console.log(valores[i]); 
+
+
+Object.values(persona).forEach(valor=>{
+  console.log(valor); 
+}); 
+
+
+Object.keys(persona).forEach(valor=>{
+  console.log(valor); 
+}); 
+
+
+Object.entries(persona).forEach(valor=>{
+  console.log(valor); 
+}); 
+
+
+let coche = {
+	marca: "Mercedes-Benz",
+  	modelo: "C63",
+  	matricula: "4111AX",
+  	acelerar(velocidad){
+      console.log("Voy a " + velocidad); 
+    }
+}; 
+
+
+
+
+Object.values(coche).forEach(valor=>{
+  console.log(valor); 
+}); 
+
+
 
