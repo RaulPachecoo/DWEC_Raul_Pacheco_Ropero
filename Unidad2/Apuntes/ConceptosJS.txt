@@ -1060,5 +1060,220 @@ Object.values(coche).forEach(valor=>{
   console.log(valor); 
 }); 
 
+-------------------------------------------------------------------------------------------------------------
+// Object Creation
+// 1st way of creating objects: Literal object
 
+/*const persona = {
+  nombre: "procopio",
+  edad: 30,
+  habla(texto){
+    console.log(texto); 
+  }
+};*/
+
+// option 1: duplicate code
+// option 2: object.assign
+const persona = {
+  habla(texto){
+    console.log(texto); 
+  }
+};
+const persona1 = Object.assign({}, persona); 
+const persona2 = Object.assign({}, persona); 
+
+persona1.habla("soy la persona 1"); 
+persona1.nombre = "Urraca"; 
+persona2.habla("soy la persona 2"); 
+persona2.nombre = "Úrsula"; 
+// inheritance
+// problem: duplicates code in memory
+
+
+// option3: object.create()
+
+const persona = {
+  // nested property
+  direccion:{
+    calle: "pez",
+    numero: 3
+  },
+  habla(texto){
+    console.log(texto); 
+  }
+};
+
+const persona1 = Object.create(persona); 
+const persona2 = Object.create(persona); 
+
+persona1.habla("soy la persona 1"); 
+persona1.nombre = "Urraca"; 
+persona2.habla("soy la persona 2"); 
+persona2.nombre = "Úrsula";
+// Advantage over object.assign -> it allows sharing methods in memory. 
+// Objects don´t have their own copy fo methods
+// problem: nested properties are passed by reference
+
+
+// 2nd way of creating objects
+// factory function
+const crearCoche = (marca, modelo) => {
+  return{
+    marca, 
+    modelo,
+    acelerar(){
+      console.log("acelerando"); 
+    }
+  };
+};
+
+const coche1 = crearCoche("ford", "escort"); 
+const coche2 = crearCoche("volkswagen", "golf"); 
+//problem: it doesn't allow inheritance. Besides, methods are copied at every object
+
+
+// 3rd way of creating objects
+// constructor function
+
+function Coche(marca, modelo){
+  this.marca = marca;
+  this.modelo = modelo;
+  this.acelerar = function(){
+    console.log(`soy ${this.marca} y estoy acelerando`); 
+  };
+};
+
+const coche1 = new Coche("ford", "escort");
+const coche2 = new Coche("volkswagen", "golf");
+// problem: duplicates methods at every object
+
+// prototype -> prototypical inheritance
+function Coche(marca, modelo){
+  this.marca = marca;
+  this.modelo = modelo;
+};
+Coche.prototype.acelerar = function(){
+  console.log(`soy ${this.marca} y estoy acelerando`); 
+};
+const coche1 = new Coche("ford", "escort");
+const coche2 = new Coche("volkswagen", "golf");
+
+
+// 4th way of creating objects
+
+class Coche{
+  constructor(marca, modelo){
+    this.marca = marca;
+  	this.modelo = modelo;
+  };
+  acelerar(){
+    console.log(`soy ${this.marca} y estoy acelerando`); 
+  };
+}; 
+
+const coche1 = new Coche("ford", "escort");
+const coche2 = new Coche("volkswagen", "golf");
+
+
+// create, assign
+// hasOwnProperty, hasOwn, in
+const objeto = {a:1}; 
+console.log(objeto.hasOwnProperty('a'));// inherited from object
+
+const objetoHeredado = Object.create(objeto); 
+objetoHeredado.b = 2; 
+Object.defineProperty(objetoHeredado, 'c', {
+  value: 3,
+  writable: false,
+  enumerable: true,
+  configurable: true
+}); 
+
+console.log(objetoHeredado.hasOwnProperty('c')); 
+
+///////////////////
+//ES13 ECMAScript 2022
+console.log(Object.hasOwn(objetoHeredado, 'a')); 
+console.log(Object.hasOwn(objetoHeredado, 'b')); 
+
+console.log('a' in objetoHeredado); 
+
+//defineProperty
+function Persona(nombre,edad){
+  this.nombre = nombre; 
+  this.edad = edad; 
+}
+
+const persona1 = new Persona("Sisebuto", 30); 
+Object.defineProperty(Persona.prototype, 'saludar', {
+  value: function(){
+    console.log("Hola soy " + this.nombre); 
+  },
+  writable: true,
+  enumerable: false,
+  configurable: false
+}); 
+persona1.saludar(); 
+
+const persona2 = new Persona("olegario", 22);
+persona2.saludar(); 
+
+
+// copying nested properties
+
+const persona = {
+  nombre: "recaredo",
+  profesion: "rey godo",
+  medidas: {
+    altura: 160,
+    peso: 80
+  }
+}; 
+
+// deep copy
+let persona2 = structuredClone(persona); 
+persona2.nombre = "recadera"; 
+console.log(persona.nombre, persona2.nombre); 
+
+persona2.medidas.altura = 190; 
+console.log(persona.medidas.altura, persona2.medidas.altura);
+
+// this 
+function Persona(nombre, edad){
+  this.nombre = nombre; 
+  this.edad = edad; 
+}; 
+
+Persona.prototype.saludar=function(){
+  console.log(`hola soy ${this.nombre}`); 
+}; 
+const persona1 = new Persona(); 
+persona1.saludar(); 
+
+
+function Producto(nombre, precio){
+  this.nombre = nombre; 
+  this.precio = precio; 
+  this.descontar = function(porcentaje){
+    const descuento = this.precio * (porcentaje/100); 
+    console.log(this.precio - descuento)
+  }; 
+}
+const producto1 = new Producto("zapatos", 120); 
+producto1.descontar(20); 
+
+// this is tricky to use with arrow functions
+let persona = {
+  nombre: "higinio",
+  edad: 22
+}; 
+persona.saluda=()=>{
+  console.log(`yo, ${this.nombre}, te saludo`); 
+}
+persona.despidete=function(){
+  console.log(`yo, ${this.nombre}, me despido`); 
+}
+
+persona.despidete(); 
+persona.saluda(); 
 
