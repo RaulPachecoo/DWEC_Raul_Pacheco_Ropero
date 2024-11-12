@@ -1277,3 +1277,308 @@ persona.despidete=function(){
 persona.despidete(); 
 persona.saluda(); 
 
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+// stablishing a context
+
+
+// example 1:
+function multiplicar(a,b){
+  return a*b; 
+}
+
+
+const duplicar = multiplicar.bind(null,2); 
+console.log(duplicar(5)); 
+console.log(duplicar(10)); 
+
+//exmaple 2: BIND provides a context for a function
+const persona={
+  nombre:"procopio",
+  saludar:function(){
+    console.log(`Hola soy ${this.nombre}`); 
+  }
+};
+
+
+persona.saludar(); 
+const saludarFuera=persona.saludar; //losing context
+saludarFuera(); 
+
+
+const saludarConBind=persona.saludar.bind(persona); 
+saludarConBind(); 
+
+//example3: BIND
+const persona={
+  nombre:"procopio",
+  saludar:function(){
+    const funcionFlecha=()=>{
+    	console.log(`Hola soy ${this.nombre}`); 
+    }; 
+    funcionFlecha(); 
+  },
+  /*
+  despedir:despedir=()=>{
+    console.log(`Adiós soy ${this.nombre}`); //context = global object doesn't have nombre property
+  }
+  */
+};
+
+persona.saludar();
+//persona.despedir(); 
+
+const funcionDeFuera=function(){
+  console.log(this.nombre); 
+}
+
+let aux=funcionDeFuera.bind(persona); 
+aux(); 
+
+// regular methods take their context at execution time
+//arrow functions take their context at definition time
+
+// CALL (APLY)
+const persona={
+  nombre:"procopio",
+  edad:35
+  
+}; 
+
+function saludar(){
+  console.log(`${this.nombre} te saluda`); 
+}
+
+saludar.call(persona); 
+
+//EXAMPLE: CALL
+function Persona(nombre,edad){
+  this.nombre = nombre; 
+  this.edad = edad; 
+}
+Object.defineProperty(Persona.prototype, 'saludar', {
+  value: function(){
+    console.log(`${this.nombre} te saluda`);
+  },
+  writable:true,
+  enumerable:false,
+  configurable:false
+}); 
+
+const persona1 = new Persona("demetrio", 27); 
+persona1.saludar(); 
+Persona.prototype.saludar.call(persona1); 
+//bind y call establecen de forma estática un contexto
+
+
+//call
+function Persona(nombre,edad){
+  this.edad = edad; 
+  this.nombre = nombre; 
+}
+Object.defineProperty(Persona.prototype, 'saludar',{
+  value:function(){
+    console.log(`hola soy ${this.nombre}`); 
+  },
+  writable: true,
+  enumerable: false,
+  configurable: false
+}); 
+
+const persona1 = new Persona("sisebuto", 22); 
+persona1.saludar(); 
+Persona.prototype.saludar.call(persona1); 
+
+const obj1 = {nombre:"nepomuceno"}; 
+const obj2 = {nombre:"servanda"}; 
+
+function saludar(){
+  console.log(`hola soy ${this.nombre}`); 
+}
+saludar.call(obj1);
+
+--------------------------------------------------------------------------------------------------------------------------
+
+//literal objects
+let persona={
+  _nombre: "",
+  _apellidos: ""
+}; 
+
+let persona1 = Object.create(persona); 
+persona1.nombre="apolinar"; 
+console.log(persona1); 
+
+//constructor function
+function Persona(nombre,edad){
+  this.nombre=nombre; 
+  this.edad=edad; 
+}
+
+const paco = new Persona("paco", 40); 
+paco._nombre="Felipe"; 
+console.log(paco._nombre); 
+
+---------------------------------------------------------------------------------------------------------------------------
+//clases
+class Animal{
+  #nombre; 
+  #especie;
+  
+  constructor(nombre,especie){
+    this.#nombre = nombre; 
+    this.#especie = especie; 
+  }
+}
+
+const miMascota = new Animal("tizón", "gato"); 
+
+console.log(miMascota.#nombre);
+
+---------------------------------------------------------------------------------------------------------------------------------
+//getters and setters
+//literal objects
+let persona={
+  _nombre: "",
+  _apellidos: "",
+  
+  get nombre(){
+    console.log(this._nombre); 
+  },
+  
+  set nombre(nombre){
+    this._nombre = nombre; 
+  },
+  
+  get apellidos(){
+    console.log(this._apellidos); 
+  },
+  set apellidos(apellidos){
+    this._apellidos = apellidos; 
+  }
+}; 
+
+
+let persona1 = Object.create(persona); 
+persona1.nombre="felipe";
+persona1.nombre; 
+
+
+//constructor function
+function Persona(nombre, edad) {
+  let _nombre = nombre; 
+  let _edad = edad; 
+  
+  // Métodos para obtener y cambiar el nombre
+  this.getNombre = function() {
+    return _nombre; 
+  }
+  
+  this.setNombre = function(nombre) {
+    _nombre = nombre; 
+  }
+
+  Object.defineProperty(this, 'edad', {
+    get: function() {
+      return _edad; 
+    },
+    set: function(newEdad) {
+      _edad = newEdad; 
+    },
+    enumerable: true,
+    configurable: false
+  });
+}
+
+const paco = new Persona("paco", 40);  
+console.log(paco.getNombre());  
+paco.setNombre("Pepin"); 
+console.log(paco.getNombre());  
+console.log(paco.edad);         
+paco.edad = 50; 
+console.log(paco.edad);  
+
+//clases
+class Animal{
+  #nombre; 
+  #especie;
+  
+  constructor(nombre,especie){
+    this.#nombre = nombre; 
+    this.#especie = especie; 
+  }; 
+  get nombre(){
+    return this.#nombre; 
+  }; 
+  set nombre(nuevoNombre){
+    this.#nombre = nuevoNombre; 
+  }; 
+}
+
+const miMascota = new Animal("tizón", "gato"); 
+miMascota.nombre="algodon"; //set
+console.log(miMascota.nombre); //get  
+
+--------------------------------------------------------------------------------------------------------------------------------
+// Inheritance
+// FATHER
+class Usuario {
+  constructor(nombre, email, password) {
+    this.nombre = nombre; 
+    this.email = email; 
+    this.password = password; // Corregido: Cambié la coma por un punto.
+  }
+  
+  saludo() {
+    console.log(`Hola soy ${this.nombre}`); 
+  }
+  
+  login(email, password) {
+    return this.email === email && this.password === password;      
+  } 
+}
+
+// SON
+class Alumno extends Usuario {
+  constructor(nombre, email, password) {
+    super(nombre, email, password); 
+    this.activo = false; 
+    this.cursos = []; 
+  }
+  
+  activar() {
+    this.activo = true; 
+  }
+  
+  login(email, password) {
+    if (!this.activo) {
+      return false; 
+    }
+    return super.login(email, password); 
+  }
+  
+  agregarCurso(curso) {
+    this.cursos.push(curso); 
+  }
+}
+
+// Creación de instancias y pruebas
+const pablo = new Usuario("Pablo", "pablo@gmail.com", "pablo123"); 
+const jose = new Alumno("Jose", "jose@gmail.com", "jose123");
+
+console.log(pablo); 
+console.log(jose); 
+
+// Agregar un curso, activar al alumno y probar el login
+jose.agregarCurso("Cliente"); 
+jose.activar(); 
+console.log(jose); 
+console.log(jose.login("jose@gmail.com", "jose123")); // Debe retornar true ya que está activado
+
+
+
+
+
+
+
