@@ -1520,6 +1520,44 @@ const miMascota = new Animal("tizón", "gato");
 miMascota.nombre="algodon"; //set
 console.log(miMascota.nombre); //get  
 
+
+//Context
+
+function Animal(nombre){
+  this.nombre = nombre;
+  //regular or arrow -> "this"
+  this.hacerSonido=()=>{
+    console.log(`${this.nombre} esta haciendo un sonido`); 
+  }
+  this.comer=function(){
+    console.log(`${this.nombre} esta comiendo`); 
+  }
+}
+
+Animal.prototype.hazSonido=()=>{
+  console.log(`${this.nombre} esta haciendo un sonido`); 
+}; 
+Animal.prototype.come=function(){
+  console.log(`${this.nombre} esta comiendo`); 
+}; 
+
+Animal.prototype.duerme=function(){
+  const funcionDeFlecha=()=>{
+    console.log(`${this.nombre} está durmiendo`); 
+  }
+    funcionDeFlecha(); 
+}; 
+
+const miAnimal = new Animal("algodon"); 
+miAnimal.hacerSonido(); 
+miAnimal.comer(); 
+//miAnimal.hazSonido(); undefined o error
+miAnimal.come(); 
+miAnimal.duerme(); 
+
+setTimeout(miAnimal.hacerSonido,5000); // arrow func
+setTimeout(miAnimal.comer,4000);  // traditional func
+
 --------------------------------------------------------------------------------------------------------------------------------
 // Inheritance
 // FATHER
@@ -1564,6 +1602,7 @@ class Alumno extends Usuario {
 }
 
 // Creación de instancias y pruebas
+
 const pablo = new Usuario("Pablo", "pablo@gmail.com", "pablo123"); 
 const jose = new Alumno("Jose", "jose@gmail.com", "jose123");
 
@@ -1576,9 +1615,411 @@ jose.activar();
 console.log(jose); 
 console.log(jose.login("jose@gmail.com", "jose123")); // Debe retornar true ya que está activado
 
+--------------------------------------------------------------------------------------------------------------------------------
+
+// Encapsulación: propiedades privadas con getters y setters
+
+function Persona(nombre, edad) {
+  let _nombre = nombre;
+  let _edad = edad;
+
+  // Métodos para acceder y modificar las propiedades privadas
+  this.getNombre = function () {
+    return _nombre;
+  };
+
+  this.setNombre = function (nuevoNombre) {
+    _nombre = nuevoNombre;
+  };
+
+  this.getEdad = function () {
+    return _edad;
+  };
+
+  this.setEdad = function (nuevaEdad) {
+    _edad = nuevaEdad;
+  };
+
+  const miFuncion = function () {
+    console.log("Hola");
+  };
+
+  this.llamaFuncion = function () {
+    miFuncion();
+  };
+}
+
+const paco = new Persona("Paco", 40);
+
+paco.llamaFuncion(); 
+
+
+class Animal{
+  #nombre; 
+  #especie; 
+  
+  constructor(nombre, especie){
+    this.#nombre = nombre; 
+    this.#especie = especie; 
+  }
+  
+  get nombre(){
+    return this.#nombre; 
+  }
+  
+  set nombre(nuevoNombre){
+    this.#nombre = nuevoNombre; 
+  }
+  
+  #miMetodo(cadena){
+    console.log(cadena); 
+  }
+  llamaMiMetodo(cadena){
+    this.#miMetodo(cadena); 
+  }
+}
+
+const miMascota = new Animal("tizon", "gato"); 
+miMascota.nombre = "algodon"; 
+//miMascota.#miMetodo(); 
+miMascota.llamaMiMetodo("hola don pepito"); 
+console.log(miMascota.nombre); 
+
+---------------------------------------------------------------------------------------------------------------------
+//overriding
+//constructor objects
+function Animal(){}; 
+
+Animal.prototype.ruido=function(){
+  console.log("estoy haciendo un ruido de animal"); 
+}; 
+
+function Gato(nombre){
+  Animal.call(this); //super en clases
+  this.nombre = nombre; 
+}
+
+//class -> extends
+Gato.prototype = Object.create(Animal.prototype); 
+Gato.prototype.constructor = Gato; 
+
+Gato.prototype.ruido = function(){
+  Animal.prototype.ruido.call(this); 
+  console.log("estoy maullando"); 
+}
+
+const miGato = new Gato("tizon"); 
+miGato.ruido(); 
+
+/syntactic sugar
+//class
+class Animal {
+  ruido() {
+    console.log("estoy haciendo un ruido de animal");
+  }
+}
+
+
+class Gato extends Animal {
+  constructor(nombre) {
+    super(); 
+    this.nombre = nombre;
+  }
+
+  ruido() {
+    super.ruido(); 
+    console.log("estoy maullando");
+  }
+}
+
+const miGato = new Gato("tizon");
+miGato.ruido();
+
+-------------------------------------------------------------------------------------------------------------------------------
+// static methods and properties
+/*
+	-instance-> associated with instances
+    -staticos-> associated with classes or constructor function
+*/
+
+//constructor function
+
+function Animal(){
+  Animal.contador++; 
+}; 
+Animal.contador=0; 
+Animal.patas = 4; //static property
+//static method
+Animal.compararVelocidad=function(animal1, animal2){
+  if(animal1.velocidad < animal2.velocidad){
+    console.log(animal2.nombre + " es más rápido"); 
+  }else{
+    console.log(animal1.nombre + " es más rápido"); 
+  }
+}; 
 
 
 
+function Perro(nombre, velocidad){
+  Animal.call(this); //super -> class
+  this.nombre = nombre; 
+  this.velocidad = velocidad; 
+}; 
+Perro.prototype = Object.create(Animal.prototype); 
+Perro.prototype.constructor = Perro; 
+
+function Gato(nombre, velocidad){
+  Animal.call(this); //super -> class
+  this.nombre = nombre; 
+  this.velocidad = velocidad; 
+}; 
+
+Gato.prototype = Object.create(Animal.prototype); 
+Gato.prototype.constructor = Gato; 
+
+const miGato = new Gato("tizon", 15); 
+const miPerro = new Perro("roque", 12); 
+
+console.log(Animal.compararVelocidad(miGato, miPerro));
+console.log(Animal.contador); 
+
+--------------------------------------------------------------------------------------------------------------------------------
+//unstructuring
+const animal ={
+  nombre:"pipo",
+  especie: "colorin",
+  edad: 5,
+  direccion:{
+    calle:"Pez",
+    numero: 2
+  }
+}; 
+const {nombre, especie} = animal;
+const {direccion:{calle, numero}} = animal; 
+console.log(nombre,especie); 
+console.log(calle, numero); 
+
+--------------------------------------------------------------------------------------------------------------------------------
+//Object operators
+//instanceof y ?. (optional chainig)
+
+class Animal{}; 
+const miAnimal = new Animal(); 
+
+console.log(miAnimal instanceof Animal); 
+console.log(miAnimal instanceof Perro); 
+
+let numeros = [1,2,3,4]; 
+console.log(numeros instanceof Object); 
+console.log(numeros instanceof Array); 
 
 
+//?.  // Se utiliza para propiedades opcionales
+let persona = {}; 
+console.log(persona.direccion?.calle); 
+
+//?.
+let persona = {}; 
+console.log(persona.direccion?.calle);
+
+ 
+//mixins ->
+class Base{
+  constructor(){
+    this.contador=0; 
+  }
+  aumenta(){
+    this.contador++; 
+    return this; 
+  }
+  muestra(){
+    console.log(this.contador);
+    return this; 
+  }
+}
+
+
+//mixin
+let mezcla = (claseBase)=>class extends claseBase{
+  constructor(){
+    super(); 
+  }
+  disminuye(){
+    this.contador--;
+    return this; 
+  }
+}
+
+class Heredada extends mezcla(Base){
+  reiniciar(){
+    this.contador=0; 
+  }
+}
+  
+let miClase = new Heredada(); 
+/*
+miClase.muestra();
+miClase.aumenta(); 
+miClase.muestra(); 
+miClase.disminuye(); 
+miClase.muestra(); 
+*/
+miClase.muestra().aumenta().aumenta().disminuye().muestra(); 
+
+
+--------------------------------------------------------------------------------------------------------------------------
+//Number
+
+let a=5; //Recomendado
+let numObj=new Number(5);
+numObj.maximo=15; 
+/*
+1.- API
+2.- I can define Propiedades
+3.- Shared
+4.- There are predefined properties .MAX_VALUE
+*/
+/*
+//edefined properties
+console.log(Number.MAX_VALUE); 
+console.log(Number.MIN_VALUE); 
+console.log(Number.NaN); 
+console.log(Number.POSITIVE_INFINITY); 
+console.log(Number.MAX_SAFE_INTEGER); 
+
+//Imprecise regarding numbers
+//FP DP -> 64 Bits 1 sign, 11 exponent, 52 mantissa 
+//-2^53+1 until 2^53-1
+console.log(1e500); 
+//BigInt -> primitive value
+console.log(999999999999999999); 
+let sum=0.1+0.2; 
+console.log(sum); 
+
+//toFixed
+console.log(sum.toFixed(1) == 0.3); 
+*/
+//BigInt -> no es el objeto number
+/*
+const maximo=Number.MAX_SAFE_INTEGER; 
+const num1=maximo+1; //9007199254740992
+const num2=num1+1; //9007199254740993
+const num3=num2+1; //9007199254740994
+console.log(num1, num2, num3);
+
+//No se representan en CF
+const big1 = BigInt(maximo)+1n; 
+const big2 = big1 +1n; 
+const big3 = big2 +1n; 
+console.log(big1, big2, big3); 
+
+
+//Number creation
+let numero_primitivo=4; 
+const numero_grande_primitivo=100n; 
+const obj1=new Number(4); 
+ 
+console.log(obj1); 
+
+
+//comparison
+let num1 = 5; 
+let obj1 = new Number(5); 
+let obj2 = new Number(5); 
+
+console.log(num1==5); 
+console.log(obj1==5); 
+console.log(obj1 == obj2); 
+console.log(obj1.valueOf()==obj2.valueOf()); 
+
+
+//methods to check information
+/*
+	-global functions-> More permissive -> it works on any data type. 2.- It performs a conversion of data prior to applying function
+    -object methods-> More restrictive -> it only works on numbers 2.- No conversion is made before applying method
+*/
+
+console.log(isFinite(5), isFinite(new Number(5)), isFinite(new Number(5).valueOf()), isFinite(Infinity), isFinite(null), isFinite("15")); //global
+console.log(Number.isFinite(5), Number.isFinite(new Number(5)), Number.isFinite(new Number(5).valueOf()), Number.isFinite(Infinity), Number.isFinite(null), Number.isFinite("15")); //Number object method
+
+//isNaN
+console.log(isNaN(5), isNaN(new Number(5).valueOf()), isNaN(new Number(5)), isNaN("hola")); 
+console.log(Number.isNaN(5), Number.isNaN(new Number(5)), Number.isNaN(new Number(5).valueOf()), Number.isNaN("hola"));
+
+//isInteger
+console.log(Number.isInteger(5), Number.isInteger(new Number(5)), Number.isInteger(new Number(5).valueOf())); 
+
+//conversion
+//toString
+let obj1 = new Number(5); 
+let obj2 = new Number(5.5); 
+
+console.log( typeof obj1.toString(), new Number(8).toString(), new Number(null).toString(), new Number(Infinity).toString()); 
+
+//autoboxing
+console.log(Infinity.toString(), NaN.toString(), (5).toString());
+
+console.log(String(Infinity), String(5)); 
+
+//Converting Strings to numbers
+console.log(Number('hola'), Number('12.5'), Number('5'), Number('5'), Number(true));
+
+console.log(parseInt('250px'), parseInt('4rem'), parseInt('12.5'), parseInt(null)); 
+
+console.log(parseFloat('12.5'), parseFloat(null));
+
+console.log(Number.parseInt('250px'), Number.parseFloat('12.5')); 
+
+------------------------------------------------------------------------------------------------------------------------
+//Math object
+console.log(Math.PI, Math.E, Math.LN2, Math.LN10, Math.SQRT2, Math.SQRT1_2, Math.LOG2E, Math.LOG10E); 
+
+//rounding
+const float1 = 2.567; 
+const float2 = 2.456; 
+//floor, ceil, round, trunc
+console.log(Math.floor(float1), Math.floor(float2)); 
+console.log(Math.ceil(float1), Math.ceil(float2)); 
+console.log(Math.round(float1), Math.round(float2)); 
+console.log(Math.trunc(float1), Math.trunc(float2)); 
+
+//basic mathematical operations
+//abs, sqrt, pow, min, max, log, random
+const n1 = 5; 
+const n2 = -5; 
+
+console.log(Math.abs(n2)); 
+console.log(Math.abs(new Number(-4).valueOf())); 
+
+console.log(Math.sqrt(n1), Math.sqrt(new Number(5))); 
+
+console.log(Math.pow(2,n1), Math.pow(new Number(2), 1)); 
+
+console.log(Math.min(n1, n2, 4, 1, 7, 2)); 
+
+let mat1 = [52, 819, 234]; 
+let mat2 = [934, 12, 564, 12332];
+let mat3 = [212, 523, 11212, 12123, 2123, 123]; 
+
+console.log(Math.min(...mat1,...mat2,...mat3)); 
+console.log(Math.max(...mat1,...mat2,...mat3)); 
+
+console.log(Math.log(new Number(10))); 
+
+console.log(Math.random()); 
+console.log(Math.random() * 10); //entre 0 y 10 (sin incluir)
+console.log((Math.random() * 7) + 3); //entre 3 y 10
+let min = 3; 
+let max = 10; 
+console.log((Math.random()*(max-min))+min); //Número aleatorio entre min y max
+
+//Trigonométricas
+//sin, cos, tan, asin, acos, atan, hypot
+console.log(Math.sin(Math.PI/4)); //seno 45º
+console.log(Math.cos(Math.PI));  //coseno 180º
+console.log(Math.tan(Math.PI/2)); //tangente 90º
+console.log(Math.hypot(4,9)); 
+
+
+---------------------------------------------------------------------------------------------------------------------------------
 
