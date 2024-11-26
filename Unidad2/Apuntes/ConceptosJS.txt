@@ -2022,4 +2022,268 @@ console.log(Math.hypot(4,9));
 
 
 ---------------------------------------------------------------------------------------------------------------------------------
+//RegExp
+//literal reg exp
+const exp1 = /gato/;
+//as an object
+const exp2 = new RegExp("gato"); 
+//const palabra = prompt("¿Qué quieres buscar?"); 
+//const exp3 = new RegExp(palabra); 
+
+//testing
+const texto = "mi gato es estupendo. mi gato es amarillo"; 
+console.log(exp1.test(texto)); 
+console.log(exp1.exec(texto));
+
+const exp2 = /GATO/; 
+console.log(exp2.test(texto)); 
+
+//i-> case intensitive
+const exp3 = new RegExp("gato", "i"); 
+console.log(exp3.test(texto)); 
+
+//g -> global search
+exp2 = /GATO/ig
+//console.log(exp2.lastIndex, exp2.exec(texto), exp2.lastIndex, exp2.exec(texto), exp2.lastIndex); 
+let resultado; 
+while ((resultado = exp2.exec(texto)) !== null) {
+    console.log(exp2.lastIndex, resultado, exp2.lastIndex);
+}
+
+//y -> sticky(pegajoso)
+let texto = "gato GATO .gato"; 
+const expG = /gato/g; 
+const expY = /gato/y; 
+let resultado; 
+while ((resultado = expG.exec(texto)) !== null) {
+    console.log(expG.lastIndex, resultado, expG.lastIndex);
+}
+while ((resultado = expY.exec(texto)) !== null) {
+    console.log(expY.lastIndex, resultado, expY.lastIndex);
+}
+
+//m -> multiline
+texto = "hola
+	mundo
+	adios
+	a todos";
+
+const expSinM = /^mundo/; 
+console.log(expSinM.test(texto)); 
+const expConM = /^mundo/m; 
+console.log(expConM.test(texto)); 
+
+//quantifiers
+//* --> matches with 0 or more
+
+let regExp=/ho*la/; 
+console.log(regExp.test("hola")); 
+console.log(regExp.test("hla")); 
+console.log(regExp.test("hooooooooooooola")); 
+console.log(regExp.test("la"));
+
+//+ --> matches with 1 or more
+let regExp=/ho+la/; 
+console.log(regExp.test("hola")); 
+console.log(regExp.test("hla")); 
+console.log(regExp.test("hooooooooooooola")); 
+console.log(regExp.test("la"));
+
+
+//? --> matches with 0 or 1
+let regExp=/ho?la/; 
+console.log(regExp.test("hola")); 
+console.log(regExp.test("hla")); 
+console.log(regExp.test("hooooooooooooola")); 
+console.log(regExp.test("la"));
+
+//{3} --> matches with exactly with n repetitions
+let regExp=/ho{3}la/; 
+console.log(regExp.test("hola")); 
+console.log(regExp.test("hla")); 
+console.log(regExp.test("hooooooooooooola")); 
+console.log(regExp.test("la"));
+
+//{n,m} --> matches with with n to m repetitions
+let regExp=/ho{3,5}la/; 
+console.log(regExp.test("hola")); 
+console.log(regExp.test("hla")); 
+console.log(regExp.test("hoooola")); 
+console.log(regExp.test("la"));
+
+//{n,} --> matches n or more repetitions
+let regExp=/ho{4,}la/; 
+console.log(regExp.test("hola")); 
+console.log(regExp.test("hla")); 
+console.log(regExp.test("hooooola")); 
+console.log(regExp.test("la")); 
+
+// ? + and * are greddy(avaricioso)
+let cadena = "<li>texto1</li><li>texto2</li>"; 
+let regExp = /<li>.*<\/li>/g; 
+let resultado; 
+while ((resultado = regExp.exec(cadena)) !== null) {
+    console.log(resultado[0]);
+}
+
+//groups and ranges
+//() --> groups
+//[] --> ranges
+
+let regexp1 = /(ab)+?/; 
+let regexp2 = /(ho){2,3}/g; 
+let cadena = "ababababababc";
+let cadena2 = "ho hoho hohoho hohohohoho"
+console.log(regexp1.exec(cadena)); 
+let resultado; 
+while ((resultado = regexp2.exec(cadena2)) !== null) {
+    console.log(resultado);
+}
+
+
+let regexp1 = /[a-m]/; 
+const cadena = "asdf iñkj asdfg ñlkj"; 
+console.log(regexp1.exec(cadena)); 
+
+const regexp2 = /([a-c]{2})[0-9]/; 
+const cadena = "ap12"; 
+console.log(regexp2.test(cadena)); 
+
+const regexp2 = /([a-c]{2,})[0-9]*/; 
+const cadena = "ab1"; 
+console.log(regexp2.test(cadena)); 
+
+const regexp2 = /([a-c]{2,})[0-9]*/; 
+const cadena = "abc1"; 
+console.log(regexp2.test(cadena)); 
+
+//limits
+/*^
+$
+\b -> Word boundary
+\B -> non-word boundary
+*/
+
+const regexp = /\bHola\b/; 
+/*
+H -> \b límite de palabra
+o -> \B no límite de palabra
+l -> \B no límite de palabra
+a -> \b límite de palabra
+*/
+const texto = "Hola mundo";
+console.log(regexp.exec(texto)); 
+const regexp2 = /\bola\b/; 
+console.log(regexp2.test(texto)); 
+
+----------------------------------------------------------------------------------------------------------------------------
+//STRING
+//creating string
+let string = 'comillas simples'; 
+let string2 = "comillas dobles"; 
+let string3 = `comillas invertidas`; 
+let string4 = `lista de compra
+	-tomates
+    -pepinos`;
+let string5 = '\testo es una linea\nesto es otra "linea"'; 
+
+
+const cadObj1 = new String("Esto es una cadena objeto");
+//getting object information
+console.log(cadObj1.valueOf(), cadObj1.length); 
+
+console.log(cadObj1[5], cadObj1.at(5), cadObj1.at(-5));
+
+//modifying strings
+const cadObj1 = new String("hola, cadena de prueba"); 
+/*
+cadObj1[2] = "b"; 
+console.log(cadObj1.valueOf(), typeof cadObj1);
+*/
+let cadObj2 = cadObj1; 
+console.log(typeof cadObj2); 
+cadObj2 = "Saludos, criaturas"; 
+console.log(cadObj1.valueOf(), cadObj2.valueOf(), typeof cadObj2); 
+const  cadObj3 = new String(cadObj2); 
+
+//concatenating
+const cadObj1 = new String("hola, yo os saludo"); 
+const cadObj2 = new String("adiós, me despido"); 
+
+let cad3 = cadObj1.valueOf() + cadObj2.valueOf(); 
+console.log(cad3, typeof cad3); 
+const cadObj3 = new String(cadObj1.valueOf() + cadObj2.valueOf()); 
+console.log(cadObj3.valueOf(), typeof cadObj3); 
+
+//operations over strings
+//concat
+console.log(cadObj1.concat("¡", cadObj2, "!"), typeof cadObj1.concat(cadObj2)); 
+
+
+//padStart y padEnd
+const texto = new String("hola HOLA hola"); 
+console.log(texto.length); 
+console.log(texto.padStart(texto.length+10, "a")); 
+console.log(texto.padEnd(texto.length+10, "a")); 
+
+//toUpperCase y toLowerCase
+console.log(texto.toUpperCase(), typeof texto.toUpperCase()); 
+console.log(texto.toLowerCase(), typeof texto.toLowerCase()); 
+
+//replace substrings
+const cadObj1 = new String("JavaScript es bello. JavaScript me mola"); 
+let resultado = cadObj1.replace("JavaScript", "Python"); 
+console.log(resultado); 
+let resultado2 = cadObj1.replaceAll("JavaScript", "Python"); 
+console.log(resultado2); 
+let resultado3 = cadObj1.replace(/javascript/gi, "Python"); 
+console.log(resultado3); 
+
+//trim -> remove empty spaces from the beginning and the end 
+let cad="	JavaScript es bello. JavaScript me mola		"; 
+console.log(cad.trim().concat("z")); 
+
+const cadObj1 = new String("	JavaScript es bello. JavaScript me mola		"); 
+console.log(cadObj1.trim().concat("z")); 
+
+console.log(cadObj1.replace(/^\s+|\s+$/g, "").concat("ñ")); 
+
+
+//looking for substring
+let cadObj1 = new String("JavaScript es bello. JavaScript me mola. JavaScript es mi lenguaje"); 
+console.log(cadObj1.indexOf("bello", 20)); 
+console.log(cadObj1.lastIndexOf("JavaScript")); 
+console.log(cadObj1.includes("aasbello")); 
+console.log(cadObj1.startsWith("JavaScript")); 
+console.log(cadObj1.endsWith("lenguaje")); 
+console.log(cadObj1.search("javascript"));
+console.log(cadObj1.search(/javascript/ig));
+cadObj1.match(/javascript/ig).forEach(elemento=>{console.log(elemento);}); 
+cadObj1.match(/\b[J]\w+/ig).forEach(elemento=>{console.log(elemento);}); 
+
+
+Array.from(cadObj1).forEach(elemento=>{console.log(elemento);})
+for(let i = 0; i<cadObj1.length; i++){
+  console.log(cadObj1[i]); 
+}
+
+for(let caracter of cadObj1.valueOf()){
+  console.log(caracter); 
+}
+
+cadObj1.split("").forEach(elemento=>{console.log(elemento);})
+
+//getting substrings
+let cadObj1 = new String("hola"); 
+let a, b, c, d = console.log(...cadObj1); 
+console.log(a);
+
+//substring
+let cadObj1 = new String("JavaScript es bello. JavaScript me mola. JavaScript es mi lenguaje"); 
+console.log(cadObj1.substring(0,15), cadObj1.substring(7)); 
+
+//slice
+console.log(cadObj1.slice(-10,-3)); 
+//split
+cadObj1.split(" ").forEach(elemento=>{console.log(elemento);}); 
 
