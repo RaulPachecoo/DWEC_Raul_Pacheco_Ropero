@@ -81,26 +81,6 @@ class Estudiante {
         };
     }
 
-    obtenerRegistroMatriculas() {
-        let resultado = "";
-
-        for (const asignatura in this.#matriculas) {
-            if (this.#matriculas.hasOwnProperty(asignatura)) {
-                const { estado, fecha } = this.#matriculas[asignatura];
-
-                const fechaFormateada = fecha.toLocaleDateString("es-ES", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                });
-
-                resultado += `Asignatura: ${asignatura}, Estado: ${estado}, Fecha: ${fechaFormateada}\n`;
-            }
-        }
-
-        return resultado;
-    }
-
     calcularPromedio() {
 
         let sumaPromedios = 0;
