@@ -21,8 +21,8 @@ class Estudiante {
 
     constructor(nombre, edad, direccion) {
         this.#id = Estudiante.contadorID++;
-        this.#nombre = (nombre != null) ? ((nombre.match(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ ]+$/)) ? nombre : "Alumno") : "Alumno";
-        this.#edad = (!Number.isNaN(edad) && Number.isInteger(edad) && edad > 0) ? edad : 0;
+        this.#nombre = (nombre != null) ? ((nombre.match(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ]+$/)) ? nombre : "Alumno") : "Alumno";
+        this.#edad = (!Number.isNaN(edad) && Number.isInteger(edad) && edad > 0) ? edad : 0; // Se comprueba que que sea entero 
         this.#direccion = direccion;
         this.#asignaturas = [];
         this.#matriculas = {}; // Objeto {nombreAsignatura: {estado: "matriculado/desmatriculado", fecha: Date}}.
@@ -61,7 +61,9 @@ class Estudiante {
      * @throws {Error} Si el estudiante ya está matriculado en la asignatura.
      */
     matricularAsignatura(nombreAsignatura) {
+        // Comprueba si la asignatura esta matriculada
         if (!this.#matriculas[nombreAsignatura]) {
+            // Si no esta matriculada la añade a la lista de matrículas
             this.#matriculas[nombreAsignatura] = {
                 estado: "matriculado",
                 fecha: new Date(),
@@ -73,12 +75,13 @@ class Estudiante {
         } else if (this.#matriculas[nombreAsignatura].estado === "matriculado") {
             throw new Error(`El estudiante ya está matriculado en la asignatura ${nombreAsignatura}.`);
         } else {
+            // Si la asignatura esta en la lista, pero está en estado "desmatriculado" la cambia a "matriculado"
             this.#matriculas[nombreAsignatura] = {
                 estado: "matriculado",
                 fecha: new Date(),
             };
 
-            // Asegurar que la asignatura está en la lista de asignaturas
+            // Asegurar que la asignatura está en la lista de asignaturas, si no está la añade
             if (!this.#asignaturas.some(asig => asig.nombre === nombreAsignatura)) {
                 const nuevaAsignatura = new Asignatura(nombreAsignatura);
                 this.#asignaturas.push(nuevaAsignatura);
@@ -94,41 +97,19 @@ class Estudiante {
      * @throws {Error} Si el estudiante no está matriculado o ya está desmatriculado.
      */
     desmatricularAsignatura(nombreAsignatura) {
+        // Comprueba si la asignatura esta en la lista
         if (!this.#matriculas[nombreAsignatura]) {
             throw new Error(`El estudiante no está matriculado en la asignatura ${nombreAsignatura}.`);
         }
+        // Comprueba si la asignatura ya esta desmatriculada
         if (this.#matriculas[nombreAsignatura].estado === "desmatriculado") {
             throw new Error(`El estudiante ya está desmatriculado de la asignatura ${nombreAsignatura}.`);
         }
+        // Cambia el estado de la asignatura a desmatriculado
         this.#matriculas[nombreAsignatura] = {
             estado: "desmatriculado",
             fecha: new Date(),
         };
-    }
-
-     /**
-     * Obtiene el registro completo de las matrículas del estudiante.
-     * 
-     * @returns {string} Una cadena de texto con el detalle de cada matrícula.
-     */
-    obtenerRegistroMatriculas() {
-        let resultado = "";
-
-        for (const asignatura in this.#matriculas) {
-            if (this.#matriculas.hasOwnProperty(asignatura)) {
-                const { estado, fecha } = this.#matriculas[asignatura];
-
-                const fechaFormateada = fecha.toLocaleDateString("es-ES", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                });
-
-                resultado += `Asignatura: ${asignatura}, Estado: ${estado}, Fecha: ${fechaFormateada}\n`;
-            }
-        }
-
-        return resultado;
     }
 
     /**
@@ -143,19 +124,25 @@ class Estudiante {
         let sumaPromedios = 0;
         let contadorAsignaturas = 0;
 
+        // Recorre la lista de asignaturas
         for (let i = 0; i < this.#asignaturas.length; i++) {
+            // Asigna cada elemento de la lista a la constante "asignatura"
             const asignatura = this.#asignaturas[i];
+            // Asigna la lista de calificaciones de la asignatura actual a la constante calificaciones
             const calificaciones = asignatura.calificaciones[this.id];
 
-
+            // Comprueba que la lista de calificaciones no esté vacía
             if (calificaciones.length === 0) {
                 throw new Error(`No hay calificaciones para el estudiante ID ${this.id} en la asignatura ${asignatura.nombre}`);
             } else {
                 let sumaCalificaciones = 0;
+                // Si no está vacía recorre la lista de calificaciones y las suma a la variable "sumaCalificaciones"
                 for (let j = 0; j < calificaciones.length; j++) {
                     sumaCalificaciones += calificaciones[j];
                 }
+                // Obtiene el promedio de cada asignatura del estudiante dividiendo "sumaCalificaciones" entre la longitud de la lista de calificaciones
                 const promedioAsignatura = sumaCalificaciones / calificaciones.length;
+                // Suma el promedio de la asignatura actual a la variable "sumaPromedios" e incrementa el contador de asignaturas
                 sumaPromedios += promedioAsignatura;
                 contadorAsignaturas++;
             }
@@ -166,6 +153,7 @@ class Estudiante {
             return 0;
         }
 
+        // Calcula el promedio general dividiendo la suma de los promedios de las asignaturas entre el contador de asignaturas
         const promedioGeneral = sumaPromedios / contadorAsignaturas;
         return promedioGeneral;
     }
@@ -174,10 +162,12 @@ class Estudiante {
      * Busca asignaturas que coincidan con un patrón dado.
      * 
      * @param {string} patron - El patrón de búsqueda (expresión regular).
-     * @returns {Asignatura[]} Un arreglo con las asignaturas que coincidan.
+     * @returns {Asignatura[]} Una lista con las asignaturas que coincidan.
      */
     buscarAsignatura(patron) {
-        const regex = new RegExp(patron, "i");
+        // Crea una expresión regular insensible a mayúsculas/minúsculas.
+        const regex = new RegExp(patron, "i"); 
+        // Devuelve la asignatura que coincida con el patron recibido por parámetro
         return this.#asignaturas.filter(asignatura => regex.test(asignatura.nombre));
     }
 }
@@ -259,7 +249,7 @@ class Direccion {
         this.#calle = calle;
         this.#numero = numero;
         this.#piso = piso;
-        this.#codigoPostal = (new String(codigoPostal).match(/^[0-9]{5}$/)) ? codigoPostal : "00000";
+        this.#codigoPostal = (new String(codigoPostal).match(/^[0-9]{5}$/)) ? codigoPostal : "00000"; // Comprueba que el código postal tenga 5 números sino le asigna "00000"
         this.#provincia = provincia;
         this.#localidad = localidad;
     }
@@ -320,6 +310,7 @@ class ListaEstudiantes {
      * @throws {Error} Si ya existe un estudiante con el mismo ID.
      */
     agregarEstudiante(estudiante) {
+        // Comprueba si existe el estudiante recibido por parámetro
         if (this.#estudiantes.find(est => est.id === estudiante.id)) {
             throw new Error(`El estudiante con ID ${estudiante.id} ya existe.`);
         }
@@ -333,10 +324,12 @@ class ListaEstudiantes {
      * @throws {Error} Si no se encuentra un estudiante con el ID especificado.
      */
     eliminarEstudiante(idEstudiante) {
+        // Si existe el estudiante cuyo id coincide con el id recibido por parámetro lo asigna a la constante estudiante
         const estudiante = this.#estudiantes.find(est => est.id === idEstudiante);
         if (!estudiante) {
             throw new Error(`El estudiante con ID ${idEstudiante} no se encuentra en la lista.`);
         }
+        // Se elimina el estudiante cuyo id coincide con el id recibido por parámetro
         this.#estudiantes = this.#estudiantes.filter(e => e.id !== idEstudiante);
     }
 
@@ -344,9 +337,10 @@ class ListaEstudiantes {
      * Busca estudiantes cuyo nombre coincida con un patrón.
      * 
      * @param {string} patron - El patrón a buscar (expresión regular).
-     * @returns {Estudiante[]} Un arreglo de estudiantes que coinciden con el patrón.
+     * @returns {Estudiante[]} Una lista de estudiantes que coinciden con el patrón.
      */
     buscarEstudiante(patron) {
+        // Crea una expresión regular insensible a mayúsculas/minúsculas.
         const regex = new RegExp(patron, "i");
         return this.#estudiantes.filter(e => regex.test(e.nombre));
     }
@@ -368,17 +362,20 @@ class ListaEstudiantes {
      * @throws {Error} Si no hay estudiantes en la lista.
      */
     calcularPromedioGeneral() {
+        // Comprueba si hay estudiantes en la línea
         if (this.#estudiantes.length === 0) {
             throw new Error("No hay estudiantes en la lista para calcular el promedio general.");
         }
 
         let sumaPromedios = 0;
-
+        // Recorre la lista de estudiantes
         for (let i = 0; i < this.#estudiantes.length; i++) {
+            // Calcula el promedio de cada estudiante, utilizando el método de la clase Estudiante
             const promedioEstudiante = this.#estudiantes[i].calcularPromedio();
+            // Suma el promedio del estudiante a la variable "sumaPromedios"
             sumaPromedios += promedioEstudiante;
         }
-
+        // Devuelve la división de la suma de todos los promedios entre la longitud de la lista de estudiantes
         return sumaPromedios / this.#estudiantes.length;
     }
 
@@ -466,11 +463,14 @@ class Asignatura {
      * @returns {number} El promedio de las calificaciones, o 0 si no hay calificaciones.
      */
     calcularPromedio() {
+        // En esta línea se obtienen las listas de calificaciones de cada estudiante y las almacena en una sola lista que es la constante "todasLasCalificaciones"
         const todasLasCalificaciones = Object.values(this.#calificaciones).flat();
         if (todasLasCalificaciones.length === 0) {
             return 0;
         }
+        // Coge cada calificación de la lista "todasLasCalificaciones" y las suma con el método reduce
         const suma = todasLasCalificaciones.reduce((total, calificacion) => total + calificacion, 0);
+        // Devuelve la división de la suma de todas las calificaciones entre el número total de calificaciones
         return suma / todasLasCalificaciones.length;
     }
 
@@ -486,7 +486,7 @@ class Asignatura {
             throw new Error("La calificación debe estar entre 0 y 10.");
         }
         if (!this.#calificaciones[idEstudiante]) {
-            this.#calificaciones[idEstudiante] = []; // Inicializa el array si no existe
+            this.#calificaciones[idEstudiante] = []; // Inicializa el array de calificaciones si no existe
         }
         this.#calificaciones[idEstudiante].push(calificacion);
     }
