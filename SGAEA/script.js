@@ -1,3 +1,14 @@
+/**
+ * Clase Estudiante
+ * Atributos:
+ *  - id: Identificador único del estudiante (autogenerado).
+ *  - nombre: Nombre del estudiante. Se valida que solo contenga letras y espacios.
+ *  - edad: Edad del estudiante. Debe ser un número entero positivo.
+ *  - direccion: Dirección del estudiante (puede ser cualquier tipo de dato).
+ *  - asignaturas: Lista de asignaturas en las que está inscrito el estudiante.
+ *  - matriculas: Registro de matriculación de asignaturas. Formato: {nombreAsignatura: {estado, fecha}}.
+ */
+
 class Estudiante {
     static contadorID = 1; // Contador estático para generar IDs únicos.
 
@@ -41,6 +52,14 @@ class Estudiante {
         return this.#direccion;
     }
 
+    /**
+     * Matricula al estudiante en una asignatura.
+     * Si el estudiante ya está matriculado, lanza un error.
+     * Si la asignatura existe como desmatriculada, la reactiva.
+     * 
+     * @param {string} nombreAsignatura - El nombre de la asignatura a matricular.
+     * @throws {Error} Si el estudiante ya está matriculado en la asignatura.
+     */
     matricularAsignatura(nombreAsignatura) {
         if (!this.#matriculas[nombreAsignatura]) {
             this.#matriculas[nombreAsignatura] = {
@@ -67,7 +86,13 @@ class Estudiante {
         }
     }
 
-
+    /**
+     * Desmatricula al estudiante de una asignatura.
+     * Lanza un error si la asignatura no existe o ya está desmatriculada.
+     * 
+     * @param {string} nombreAsignatura - El nombre de la asignatura a desmatricular.
+     * @throws {Error} Si el estudiante no está matriculado o ya está desmatriculado.
+     */
     desmatricularAsignatura(nombreAsignatura) {
         if (!this.#matriculas[nombreAsignatura]) {
             throw new Error(`El estudiante no está matriculado en la asignatura ${nombreAsignatura}.`);
@@ -81,6 +106,11 @@ class Estudiante {
         };
     }
 
+     /**
+     * Obtiene el registro completo de las matrículas del estudiante.
+     * 
+     * @returns {string} Una cadena de texto con el detalle de cada matrícula.
+     */
     obtenerRegistroMatriculas() {
         let resultado = "";
 
@@ -101,6 +131,13 @@ class Estudiante {
         return resultado;
     }
 
+    /**
+     * Calcula el promedio general de todas las asignaturas del estudiante.
+     * Lanza un error si alguna asignatura no tiene calificaciones.
+     * 
+     * @returns {number} El promedio general del estudiante.
+     * @throws {Error} Si alguna asignatura no tiene calificaciones.
+     */
     calcularPromedio() {
 
         let sumaPromedios = 0;
@@ -133,13 +170,28 @@ class Estudiante {
         return promedioGeneral;
     }
 
-
+    /**
+     * Busca asignaturas que coincidan con un patrón dado.
+     * 
+     * @param {string} patron - El patrón de búsqueda (expresión regular).
+     * @returns {Asignatura[]} Un arreglo con las asignaturas que coincidan.
+     */
     buscarAsignatura(patron) {
         const regex = new RegExp(patron, "i");
         return this.#asignaturas.filter(asignatura => regex.test(asignatura.nombre));
     }
 }
 
+/**
+ * Clase EstudianteGraduado
+ * 
+ * Representa a un estudiante que ha completado sus estudios y se ha graduado.
+ * Extiende la clase Estudiante, añadiendo atributos y funcionalidades específicas para estudiantes graduados.
+ * 
+ * Atributos:
+ *  - fechaGraduacion: Fecha en que el estudiante se graduó.
+ *  - titulo: Título obtenido por el estudiante al graduarse.
+ */
 class EstudianteGraduado extends Estudiante {
     #fechaGraduacion;
     #titulo;
@@ -181,7 +233,20 @@ class EstudianteGraduado extends Estudiante {
     }
 }
 
-
+/**
+ * Clase Direccion
+ * 
+ * Representa la dirección de una persona, incluyendo detalles como calle,
+ * número, piso, código postal, provincia y localidad.
+ * 
+ * Atributos:
+ *  - calle: Nombre de la calle.
+ *  - numero: Número de la vivienda.
+ *  - piso: Piso dentro del edificio (puede ser nulo si no aplica).
+ *  - codigoPostal: Código postal (formato de 5 dígitos).
+ *  - provincia: Provincia en la que se encuentra la dirección.
+ *  - localidad: Localidad o ciudad de la dirección.
+ */
 class Direccion {
     #calle;
     #numero;
@@ -228,6 +293,15 @@ class Direccion {
     }
 }
 
+/**
+ * Clase ListaEstudiantes
+ * 
+ * Representa una lista de estudiantes, ofreciendo funcionalidades para 
+ * gestionar su información, como agregar, eliminar, buscar y generar reportes.
+ * 
+ * Atributos:
+ *  - estudiantes: Una lista que contiene los estudiantes registrados.
+ */
 class ListaEstudiantes {
     #estudiantes;
 
@@ -239,6 +313,12 @@ class ListaEstudiantes {
         return this.#estudiantes;
     }
 
+    /**
+     * Agrega un estudiante a la lista si no existe otro con el mismo ID.
+     * 
+     * @param {Estudiante} estudiante - El estudiante a agregar.
+     * @throws {Error} Si ya existe un estudiante con el mismo ID.
+     */
     agregarEstudiante(estudiante) {
         if (this.#estudiantes.find(est => est.id === estudiante.id)) {
             throw new Error(`El estudiante con ID ${estudiante.id} ya existe.`);
@@ -246,6 +326,12 @@ class ListaEstudiantes {
         this.#estudiantes.push(estudiante);
     }
 
+    /**
+     * Elimina un estudiante de la lista por su ID.
+     * 
+     * @param {number} idEstudiante - El ID del estudiante a eliminar.
+     * @throws {Error} Si no se encuentra un estudiante con el ID especificado.
+     */
     eliminarEstudiante(idEstudiante) {
         const estudiante = this.#estudiantes.find(est => est.id === idEstudiante);
         if (!estudiante) {
@@ -254,16 +340,33 @@ class ListaEstudiantes {
         this.#estudiantes = this.#estudiantes.filter(e => e.id !== idEstudiante);
     }
 
+    /**
+     * Busca estudiantes cuyo nombre coincida con un patrón.
+     * 
+     * @param {string} patron - El patrón a buscar (expresión regular).
+     * @returns {Estudiante[]} Un arreglo de estudiantes que coinciden con el patrón.
+     */
     buscarEstudiante(patron) {
         const regex = new RegExp(patron, "i");
         return this.#estudiantes.filter(e => regex.test(e.nombre));
     }
 
+    /**
+     * Busca un estudiante en la lista por su ID.
+     * 
+     * @param {number} id - El ID del estudiante a buscar.
+     * @returns {Estudiante | undefined} El estudiante encontrado o undefined si no existe.
+     */
     buscarEstudiantePorID(id) {
         return this.#estudiantes.find(estudiante => estudiante.id === id);
     }
 
-
+    /**
+     * Calcula el promedio general de todos los estudiantes en la lista.
+     * 
+     * @returns {number} El promedio general de la lista de estudiantes.
+     * @throws {Error} Si no hay estudiantes en la lista.
+     */
     calcularPromedioGeneral() {
         if (this.#estudiantes.length === 0) {
             throw new Error("No hay estudiantes en la lista para calcular el promedio general.");
@@ -279,6 +382,12 @@ class ListaEstudiantes {
         return sumaPromedios / this.#estudiantes.length;
     }
 
+    /**
+     * Genera un reporte detallado de todos los estudiantes en la lista.
+     * Incluye información adicional para estudiantes graduados.
+     * 
+     * @returns {string} Un reporte en formato de texto con la información de los estudiantes.
+     */
     generarReporte() {
         let reporte = "";
 
@@ -318,6 +427,15 @@ class ListaEstudiantes {
 
 }
 
+/**
+ * Clase Asignatura
+ * 
+ *
+ * Atributos:
+ *  - nombre: El nombre de la asignatura.
+ *  - calificaciones: Un objeto que almacena las calificaciones de los estudiantes, donde la clave es el ID del estudiante
+ *                    y el valor es una lista con las calificaciones del estudiante.
+ */
 class Asignatura {
     #nombre;
     #calificaciones;
@@ -342,6 +460,11 @@ class Asignatura {
         this.#nombre = nuevoNombre.trim();
     }
 
+    /**
+     * Calcula el promedio de todas las calificaciones de la asignatura.
+     * 
+     * @returns {number} El promedio de las calificaciones, o 0 si no hay calificaciones.
+     */
     calcularPromedio() {
         const todasLasCalificaciones = Object.values(this.#calificaciones).flat();
         if (todasLasCalificaciones.length === 0) {
@@ -351,6 +474,13 @@ class Asignatura {
         return suma / todasLasCalificaciones.length;
     }
 
+    /**
+     * Agrega una calificación para un estudiante en la asignatura.
+     * 
+     * @param {number} idEstudiante - El ID del estudiante al que se le asignará la calificación.
+     * @param {number} calificacion - La calificación a agregar (debe estar entre 0 y 10).
+     * @throws {Error} Si la calificación no está en el rango de 0 a 10.
+     */
     agregarCalificacion(idEstudiante, calificacion) {
         if (calificacion < 0 || calificacion > 10) {
             throw new Error("La calificación debe estar entre 0 y 10.");
@@ -361,7 +491,12 @@ class Asignatura {
         this.#calificaciones[idEstudiante].push(calificacion);
     }
 
-
+    /**
+     * Elimina todas las calificaciones asociadas a un estudiante en la asignatura.
+     * 
+     * @param {number} idEstudiante - El ID del estudiante cuyas calificaciones se eliminarán.
+     * @throws {Error} Si no existen calificaciones registradas para el estudiante especificado.
+     */
     eliminarCalificacion(idEstudiante) {
         if (!this.#calificaciones[idEstudiante]) {
             throw new Error(`No hay calificaciones registradas para el estudiante con ID ${idEstudiante}.`);
