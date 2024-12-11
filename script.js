@@ -21,7 +21,7 @@ class Estudiante {
 
     constructor(nombre, edad, direccion) {
         this.#id = Estudiante.contadorID++;
-        this.#nombre = (nombre != null) ? ((nombre.match(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ]+$/)) ? nombre : "Alumno") : "Alumno";
+        this.#nombre = (nombre != null) ? ((nombre.match(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ]+$/)) ? nombre : "Alumno") : "Alumno"; // Se comprueba que solo sean letras, cualquier letra en minúsculas o mayúsculas y que debe haber al menos 1 letra (+)
         this.#edad = (!Number.isNaN(edad) && Number.isInteger(edad) && edad > 0) ? edad : 0; // Se comprueba que que sea entero 
         this.#direccion = direccion;
         this.#asignaturas = [];
@@ -113,6 +113,7 @@ class Estudiante {
     }
 
     /**
+     * >>ERROR<<
      * Calcula el promedio general de todas las asignaturas del estudiante.
      * Lanza un error si alguna asignatura no tiene calificaciones.
      * 
@@ -362,11 +363,11 @@ class ListaEstudiantes {
      * @throws {Error} Si no hay estudiantes en la lista.
      */
     calcularPromedioGeneral() {
-        // Comprueba si hay estudiantes en la línea
+        // Comprueba si hay estudiantes en la lista
         if (this.#estudiantes.length === 0) {
-            throw new Error("No hay estudiantes en la lista para calcular el promedio general.");
+            return null; // Devuelve null si no hay estudiantes
         }
-
+    
         let sumaPromedios = 0;
         // Recorre la lista de estudiantes
         for (let i = 0; i < this.#estudiantes.length; i++) {
@@ -378,6 +379,7 @@ class ListaEstudiantes {
         // Devuelve la división de la suma de todos los promedios entre la longitud de la lista de estudiantes
         return sumaPromedios / this.#estudiantes.length;
     }
+    
 
     /**
      * Genera un reporte detallado de todos los estudiantes en la lista.
@@ -646,8 +648,8 @@ function main() {
                             break;
 
                         case 3: // Matricular Asignatura
-                            const idEstudianteMatricular = parseInt(prompt("Introduce el ID del estudiante:"));
-                            const estudianteMatricular = listaEstudiantes.buscarEstudiantePorID(idEstudianteMatricular);
+                            const nombreEstudianteMatricular = parseInt(prompt("Introduce el nombre del estudiante:"));
+                            const estudianteMatricular = listaEstudiantes.buscarEstudiante(nombreEstudianteMatricular);
                             if (!estudianteMatricular) {
                                 console.log("Estudiante no encontrado.");
                                 break;
