@@ -1,0 +1,12 @@
+{
+    "source": {
+        "include": ["fuente"],
+        "includePattern": ".*\\.js$",
+        "excludePattern": ".*\\.test\\.js$"
+    },
+    "opts": {
+      "destination": "./documentacion",
+      "template": "node_modules/minami"
+    }
+
+}
