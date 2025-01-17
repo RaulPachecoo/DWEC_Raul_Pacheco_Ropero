@@ -175,4 +175,5 @@ class Estudiante {
     }
 }
 
+
 export default Estudiante;

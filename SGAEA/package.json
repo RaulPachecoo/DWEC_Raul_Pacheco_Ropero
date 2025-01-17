@@ -1,7 +1,7 @@
 {
   "name": "sgaea",
   "version": "1.0.0",
-  "description": "Documentacion del proyecto SGAEA",
+  "description": "Proyecto SGAEA",
   "main": "script.js",
   "scripts": {
     "documenta": "npx jsdoc -c jsdoc.json",

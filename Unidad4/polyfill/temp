@@ -1,0 +1,51 @@
+//polyfills
+//trozos de códiog que expresan código nuevo en función del antiguo
+//NO MODIFICA LA SINTAXIS
+//implementan funcionalidades que no existía en navgadores antiguos
+//Array.includes()
+//opcion1: escribir yo mis propios polyfills
+//NO SE HACE
+if (!Array.prototype.includes) {
+    //el navegador no soporta el método includes y hay que hacer un polyfill
+    Array.prototype.includes = function (elemento) {
+        //código que simula el comportamiento de Array.includes()
+        for(let i = 0; i < this.length; i++) {
+            this[i] == elemento;
+            return true; 
+        }
+    }
+}
+
+/*OPCIÓN 2: usar bibliotecas externas corejs, regenerator-runtime
+    -node.js -> corejs junto empaquetadores (bundlers) webpack babel (parcel)
+    -CDN (content delivery networks) https://cdn.jsdelivr.net/npm/core-js/stable/index.js
+*/
+
+/*OPCION 3: usar servicios web polyfill.io
+        <script src="https://cdn.polyfill.io/v3/polyfill.min.js?features=es6"></script>
+*/
+
+//transpilación (transpilling)
+/*
+Traducción de sintaxis moderna a antigua. PERO NO AÑADE FUNCIONALIDAD(polyfill)
+const suma = (a, b) => a + b;
+
+var suma = function(a,b) {
+    return a + b;
+}
+
+
+
+
+configure babel
+    -babel.config.js o babel.config.json
+    -.browserlistrc
+    -información bajo un apartado browserslist en package.json
+    -un fichero webpack.json
+
+
+configurar webpack: tres ficheros
+    -webpack.common.js -> conf comunes a las dos versiones
+    -webpack.legacy.js -> conf para navegadores antiguos
+    -webpack.modern.js -> conf para navegadores modernos
+*/

@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["script.js"],
+        "include": ["src"],
         "includePattern": ".*\\.js$",
         "excludePattern": ".*\\.test\\.js$"
     },

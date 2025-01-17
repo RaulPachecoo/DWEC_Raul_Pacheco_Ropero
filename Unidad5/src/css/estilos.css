@@ -1,0 +1,13 @@
+#rojo{
+    color: red;
+}
+
+.una_clase_nueva{
+    background-color: aquamarine;
+    font-size: 1.5rem;
+}
+
+.verde{
+    color: lightgreen;
+    background-color: green;
+}

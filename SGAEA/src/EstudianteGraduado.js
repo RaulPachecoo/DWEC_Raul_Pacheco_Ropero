@@ -41,6 +41,17 @@ class EstudianteGraduado extends Estudiante {
         }
         this.#titulo = nuevoTitulo.trim();
     }
+    
+    /**
+     * Sobrecarga del método calcularPromedio para incluir ponderación adicional.
+     * 
+     * @returns {number} El promedio general del estudiante.
+     * @throws {Error} Si alguna asignatura no tiene calificaciones.
+     */
+    calcularPromedio() {
+        const promedioBase = super.calcularPromedio();
+        return promedioBase + 0.5; // Añadir una ponderación adicional para estudiantes graduados.
+    }
 
     toString() {
         return `Estudiante Graduado: ${this.nombre} (ID: ${this.id})
