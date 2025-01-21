@@ -63,12 +63,13 @@ class Estudiante {
      * @throws {Error} Si el estudiante ya está matriculado en la asignatura.
      */
     matricularAsignatura(nombreAsignatura) {
+        const fechaActual = new Date().toLocaleDateString('es-ES');
         // Comprueba si la asignatura esta matriculada
         if (!this.#matriculas[nombreAsignatura]) {
             // Si no esta matriculada la añade a la lista de matrículas
             this.#matriculas[nombreAsignatura] = {
                 estado: "matriculado",
-                fecha: new Date(),
+                fecha: fechaActual,
             };
 
             // Crear y agregar una instancia de la asignatura al estudiante
@@ -83,7 +84,7 @@ class Estudiante {
             // Si la asignatura esta en la lista, pero está en estado "desmatriculado" la cambia a "matriculado"
             this.#matriculas[nombreAsignatura] = {
                 estado: "matriculado",
-                fecha: new Date(),
+                fecha: fechaActual,
             };
 
             // Asegurar que la asignatura está en la lista de asignaturas, si no está la añade
@@ -102,6 +103,7 @@ class Estudiante {
      * @throws {Error} Si el estudiante no está matriculado o ya está desmatriculado.
      */
     desmatricularAsignatura(nombreAsignatura) {
+        const fechaActual = new Date().toLocaleDateString('es-ES');
         // Comprueba si la asignatura esta en la lista
         if (!this.#matriculas[nombreAsignatura]) {
             throw new Error(`El estudiante no está matriculado en la asignatura ${nombreAsignatura}.`);
@@ -113,7 +115,7 @@ class Estudiante {
         // Cambia el estado de la asignatura a desmatriculado
         this.#matriculas[nombreAsignatura] = {
             estado: "desmatriculado",
-            fecha: new Date(),
+            fecha: fechaActual,
         };
     }
 

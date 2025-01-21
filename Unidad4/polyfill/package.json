@@ -4,8 +4,8 @@
   "description": "ejemplo de polyfilling",
   "main": "index.js",
   "scripts": {
-    "build:legacy": "webpack --config webpack.legacy.js --mode $modo",
-    "build:modern": "webpack --config webpack.modern.js --mode $modo",
+    "build:legacy": "webpack --config webpack.legacy.js --mode %modo%",
+    "build:modern": "webpack --config webpack.modern.js --mode %modo%",
     "des": "cross-env modo=development run-s build:legacy build:modern",
     "prod": "cross-env modo=production run-s build:legacy build:modern",
     "limpia": "rimraf dist",

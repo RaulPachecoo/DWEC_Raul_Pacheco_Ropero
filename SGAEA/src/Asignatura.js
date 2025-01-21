@@ -12,7 +12,7 @@ class Asignatura {
     #calificaciones;
 
     constructor(nombre) {
-        this.#nombre = (nombre.match(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ ]+$/)) ? nombre : "Asignatura";
+        this.#nombre = (nombre.match(/^[a-zA-ZáéíóúüÁÉÍÓÚÜ IVXLCDMivxlcdm]+$/)) ? nombre : "Asignatura";
         this.#calificaciones = {}; // Objeto {idEstudiante: [calificaciones]}.
     }
 

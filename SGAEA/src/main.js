@@ -12,6 +12,7 @@ function main() {
     const estudiante1 = new Estudiante("Fran Aguilera", 20, new Direccion("Calle Falsa 1", 123, 1, "28001", "Madrid", "Madrid"));
     const estudiante2 = new Estudiante("Raúl Pacheco", 22, new Direccion("Calle Falsa 2", 456, 2, "08002", "Córdoba", "Córdoba"));
     const estudiante3 = new Estudiante("Álvaro Rodríguez", 21, new Direccion("Calle Falsa 3", 789, 3, "50003", "Granada", "Granada"));
+    const estudianteGraduado1 = new Estudiante("Alberto Pacheco", 25, new Direccion("Calle Falsa 4", 839, 5, "14970", "Córdoba", "Iznajar"));
 
     // Matricular a los estudiantes en las asignaturas correspondientes
     try {
@@ -58,6 +59,7 @@ function main() {
         listaEstudiantes.agregarEstudiante(estudiante1);
         listaEstudiantes.agregarEstudiante(estudiante2);
         listaEstudiantes.agregarEstudiante(estudiante3);
+        listaEstudiantes.agregarEstudiante(estudianteGraduado1); 
     } catch (error) {
         console.error("Error al agregar estudiantes a la lista: ", error);
     }
