@@ -1,3 +1,15 @@
+import Estudiante from './Estudiante.js';
+
+/**
+ * Clase EstudianteGraduado
+ * 
+ * Representa a un estudiante que ha completado sus estudios y se ha graduado.
+ * Extiende la clase Estudiante, añadiendo atributos y funcionalidades específicas para estudiantes graduados.
+ * 
+ * Atributos:
+ *  - fechaGraduacion: Fecha en que el estudiante se graduó.
+ *  - titulo: Título obtenido por el estudiante al graduarse.
+ */
 class EstudianteGraduado extends Estudiante {
     #fechaGraduacion;
     #titulo;
@@ -29,6 +41,17 @@ class EstudianteGraduado extends Estudiante {
         }
         this.#titulo = nuevoTitulo.trim();
     }
+    
+    /**
+     * Sobrecarga del método calcularPromedio para incluir ponderación adicional.
+     * 
+     * @returns {number} El promedio general del estudiante.
+     * @throws {Error} Si alguna asignatura no tiene calificaciones.
+     */
+    calcularPromedio() {
+        const promedioBase = super.calcularPromedio();
+        return promedioBase + 0.5; // Añadir una ponderación adicional para estudiantes graduados.
+    }
 
     toString() {
         return `Estudiante Graduado: ${this.nombre} (ID: ${this.id})
@@ -38,3 +61,5 @@ class EstudianteGraduado extends Estudiante {
             Fecha de Graduación: ${this.#fechaGraduacion.toLocaleDateString("es-ES")}`;
     }
 }
+
+export default EstudianteGraduado;
