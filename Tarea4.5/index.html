@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Webpack Babel Polyfill</title>
     <link rel="stylesheet" href="./src/estilos/estilos.css" type="text/css">
+    
   </head>
   <body>
     <div class="container">
       <h1>Bienvenido a la actividad 4.5</h1>
       <p>Un sistema de gestión con tecnologías modernas.</p>
       <button>Haz clic aquí</button>
+      <script defer type="module" src="dist/production/bundle.modern.js"></script>
+      <script defer src="dist/production/bundle.legacy.js"></script>
   </div>
-    <script defer src="./src/js/index.js"></script>
   </body>
 </html>

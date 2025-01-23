@@ -118,19 +118,32 @@ puntoInsercion.insertAdjacentHTML("afterend", cadena);
 //nodoReferencia.replaceChild(newNode, oldNode)
 let nodoReferencia = document.querySelector("ul"); 
 let nodoViejo = document.querySelector("ul>li:nth-of-type(3)>ul"); 
-const nodoNuevo = document.createComment("comentario dentro de una lista"); 
+const comentarioNuevo = document.createComment("comentario dentro de una lista"); 
 //nodoReferencia.replaceChild(nodoNuevo, nodoViejo); 
-
+const elementoNuevo = document.createTextNode("Esto es un texto"); 
 
 //Element API
-//oldNode.replaceWith(nuevoNodo)
+//oldNode.replaceWith(nuevoNodo) -> todos los hijos del nodo Y EL PROPIO NODO
+// replaceChildren -> todos los hijos del nodo PERO NO EL PROPIO NODO
 
-nodoViejo.replaceWith(nodoNuevo); 
-
+//nodoReferencia.replaceWith(nodoNuevo); 
+nodoReferencia.replaceWith(comentarioNuevo, elementoNuevo, "<p>Esto es un texto introducido directamente</p>"); 
 
 //replaceChildren
-
+//nodoReferencia.replaceChildren(comentarioNuevo, elementoNuevo, "<p>Esto es un texto introducido directamente</p>"); 
 
 
 //eliminarlos
+//Node API: nodoPadre.removeChild(nodoAEliminar)
+let padre = document.querySelector("#lista>ul"); 
+padre.removeChild(padre.firstChild); 
 
+
+
+//adjuntar eventos
+//attach events
+let nodo = document.querySelector("#botones"); 
+const cambiar=()=>{
+    nodo.classList.toggle("rojo"); 
+}
+nodo.addEventListener("click", cambiar); 
