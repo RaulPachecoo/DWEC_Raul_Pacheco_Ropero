@@ -1,17 +1,20 @@
 {
-  "name": "sgaea",
+  "name": "tarea4.5",
   "version": "1.0.0",
-  "description": "Proyecto SGAEA",
-  "main": "script.js",
+  "description": "Ejercicio transpiling y polyfilling",
+  "main": "index.js",
   "scripts": {
+    "build:legacy": "webpack --config webpack.legacy.js --mode %modo%",
+    "build:modern": "webpack --config webpack.modern.js --mode %modo%",
+    "des": "cross-env modo=development run-s build:legacy build:modern",
+    "prod": "cross-env modo=production run-s build:legacy build:modern",
     "documenta": "npx jsdoc -c jsdoc.json",
-    "limpia": "rimraf documentacion",
-    "todo": "npm-run-all limpia documenta"
+    "limpia": "rimraf documentacion dist",
+    "todo": "npm-run-all limpia documenta des"
   },
   "keywords": [
-    "jsdoc",
-    "documentacion",
-    "polyfill"
+    "Transpiling",
+    "Polyfilling"
   ],
   "author": "Raúl Pacheco",
   "license": "ISC",
@@ -22,14 +25,11 @@
     "core.js": "^0.4.2",
     "cross-env": "^7.0.3",
     "css-loader": "^7.1.2",
-    "jsdoc": "^4.0.4",
-    "minami": "^1.2.3",
     "mini-css-extract-plugin": "^2.9.2",
     "npm-run-all": "^4.1.5",
     "regenerator-runtime": "^0.14.1",
     "rimraf": "^6.0.1",
     "style-loader": "^4.0.0",
-    "taffydb": "^2.7.3",
     "webpack": "^5.97.1",
     "webpack-cli": "^6.0.1",
     "webpack-merge": "^6.0.1"

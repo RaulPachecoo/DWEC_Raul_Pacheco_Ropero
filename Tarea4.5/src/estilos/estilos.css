@@ -1,0 +1,38 @@
+body {
+    background-color: lightblue; /* Funciona en casi todos los navegadores */
+    display: grid; /* No funciona en IE 10 y anteriores */
+    place-items: center; /* No funciona en IE 10 y anteriores */
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px; /* No funciona en IE 8 y anteriores */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* No funciona en IE 8 y anteriores */
+    text-align: center;
+    width: 300px;
+}
+h1 {
+    font-size: 2rem; /* Las unidades rem no funcionan en IE 8 y anteriores */
+    margin-bottom: 10px;
+}
+p {
+    font-size: 1rem;
+    line-height: 1.5; /* No funciona en IE 8 y anteriores */
+}
+button {
+    background: linear-gradient(to right, blue, green); /* No funciona en IE 9 y anteriores */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.3s ease; /* No funciona en IE 9 y anteriores */
+}
+
+button:hover {
+    transform: scale(1.1); /* No funciona en IE 9 y anteriores */
+}
+

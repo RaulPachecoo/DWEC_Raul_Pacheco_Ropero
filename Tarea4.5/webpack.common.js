@@ -2,7 +2,7 @@ import path from 'path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export default {
-    entry: './src/main.js',
+    entry: './src/js/index.js',
     output: {
         path: path.resolve(process.cwd(), 'dist', process.env.modo),
         filename: 'bundle.js',  // Asegúrate de que la salida de JS también tenga un nombre
