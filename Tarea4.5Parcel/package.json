@@ -1,0 +1,25 @@
+{
+  "name": "tarea4.5parcel",
+  "version": "1.0.0",
+  "description": "Transpilación con Parcel",
+  "browserslist": [
+    "> 0.25%",
+    "not dead",
+    "firefox >= 20"
+  ],
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html", 
+    "clean": "rimraf dist"
+  },
+  "keywords": [
+    "Transpilación",
+    "Parcel"
+  ],
+  "author": "Raúl Pacheco",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.13.3",
+    "rimraf": "^6.0.1"
+  }
+}
