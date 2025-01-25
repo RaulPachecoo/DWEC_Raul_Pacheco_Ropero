@@ -64,6 +64,21 @@ class ListaEstudiantes {
     }
 
     /**
+     * Busca estudiantes graduados cuyos nombres coincidan con un patrón dado.
+     * 
+     * @param {string} patron - El patrón a buscar en los nombres de los estudiantes graduados.
+     * @returns {EstudianteGraduado[]} Una lista de estudiantes graduados que coinciden con el patrón.
+     */
+    buscarEstudiantesGraduados(patron) {
+        // Crea una expresión regular insensible a mayúsculas/minúsculas.
+        const regex = new RegExp(patron, "i");
+
+        // Filtra los estudiantes graduados cuyos nombres coincidan con el patrón.
+        return this.#estudiantes.filter(est => est instanceof EstudianteGraduado && regex.test(est.nombre));
+    }
+
+
+    /**
      * Busca un estudiante en la lista por su ID.
      * 
      * @param {number} id - El ID del estudiante a buscar.
@@ -72,6 +87,35 @@ class ListaEstudiantes {
     buscarEstudiantePorID(id) {
         return this.#estudiantes.find(estudiante => estudiante.id === id);
     }
+
+    /**
+     * Busca una asignatura por su nombre y devuelve el promedio de todas las calificaciones
+     * de esa asignatura en todos los estudiantes.
+     * 
+     * @param {string} nombreAsignatura - El nombre de la asignatura a buscar.
+     * @returns {number | null} El promedio de la asignatura o `null` si no se encuentra.
+     */
+    obtenerPromedioAsignatura(nombreAsignatura) {
+        // Obtener todas las asignaturas de todos los estudiantes
+        const asignaturasPromedio = this.#estudiantes.flatMap(e => e.asignaturas);
+
+        // Filtrar las asignaturas que coinciden con el nombre
+        const asignaturasFiltradas = asignaturasPromedio.filter(asig => asig.nombre === nombreAsignatura);
+
+        // Si no se encuentra ninguna asignatura con ese nombre
+        if (asignaturasFiltradas.length === 0) {
+            return null;
+        }
+
+        // Calcular el promedio de las calificaciones para esta asignatura
+        const sumaCalificaciones = asignaturasFiltradas.reduce((acc, asig) => acc + asig.calcularPromedio(), 0);
+        const promedio = sumaCalificaciones / asignaturasFiltradas.length;
+
+        return promedio;
+    }
+
+
+
 
     /**
      * Calcula el promedio general de todos los estudiantes en la lista.

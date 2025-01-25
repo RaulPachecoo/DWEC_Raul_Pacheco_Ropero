@@ -166,15 +166,29 @@ class Estudiante {
     /**
      * Busca asignaturas que coincidan con un patrón dado.
      * 
-     * @param {string} patron - El patrón de búsqueda (expresión regular).
-     * @returns {Asignatura[]} Una lista con las asignaturas que coincidan.
+     * Este método utiliza una expresión regular para encontrar asignaturas cuyo nombre coincida
+     * parcial o completamente con el patrón especificado. Es insensible a mayúsculas/minúsculas
+     * por defecto. También permite realizar una búsqueda exacta si se especifica.
+     * 
+     * @param {string} patron - El patrón de búsqueda como cadena. Este se convierte internamente
+     *                          en una expresión regular para realizar la búsqueda.
+     * @param {boolean} [exacto=false] - Si es `true`, realiza una búsqueda exacta del nombre de la
+     *                                   asignatura. Si es `false` o no se especifica, realiza una
+     *                                   búsqueda parcial utilizando el patrón.
+     * @returns {Asignatura|Asignatura[]} Si `exacto` es `true`, devuelve la primera asignatura que
+     *                                    coincida exactamente con el nombre. Si `exacto` es `false`,
+     *                                    devuelve un array con todas las asignaturas cuyos nombres 
+     *                                    coincidan con el patrón. Si no hay coincidencias, devuelve 
+     *                                    `null` (en modo exacto) o un array vacío (en modo parcial).
      */
-    buscarAsignatura(patron) {
-        // Crea una expresión regular insensible a mayúsculas/minúsculas.
+    buscarAsignatura(patron, exacto = false) {
         const regex = new RegExp(patron, "i");
-        // Devuelve la asignatura que coincida con el patron recibido por parámetro
-        return this.#asignaturas.filter(asignatura => regex.test(asignatura.nombre));
+        return exacto
+            ? this.#asignaturas.find(asignatura => regex.test(asignatura.nombre))
+            : this.#asignaturas.filter(asignatura => regex.test(asignatura.nombre));
     }
+
+
 }
 
 

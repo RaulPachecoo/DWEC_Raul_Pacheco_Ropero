@@ -140,10 +140,5 @@ padre.removeChild(padre.firstChild);
 
 
 
-//adjuntar eventos
-//attach events
-let nodo = document.querySelector("#botones"); 
-const cambiar=()=>{
-    nodo.classList.toggle("rojo"); 
-}
-nodo.addEventListener("click", cambiar); 
+
+
