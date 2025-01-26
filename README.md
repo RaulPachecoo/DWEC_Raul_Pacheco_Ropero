@@ -141,3 +141,6 @@ Vamos a subir nuestro proyecto a Netlify, siguiendo el proceso anteriormente com
 Y vamos a probarlo en BrowserStack usando, por ejemplo, Firefox (versión 30).
 
 ![Prueba en BrowserStack](https://files.catbox.moe/d95tje.png)
+
+
+
