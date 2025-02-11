@@ -29,7 +29,11 @@ function guardarListaEstudiantes() {
 function cargarListaEstudiantes() {
     const estudiantesGuardados = localStorage.getItem('listaEstudiantes');
     if (estudiantesGuardados) {
-        listaEstudiantes.estudiantes = JSON.parse(estudiantesGuardados).map(est => {
+        const estudiantes = JSON.parse(estudiantesGuardados).map(est => {
+            if (!est.direccion) {
+                console.error(`El estudiante con ID ${est.id} no tiene una dirección definida.`);
+                return null;
+            }
             const direccion = new Direccion(est.direccion.calle, est.direccion.numero, est.direccion.piso, est.direccion.codigoPostal, est.direccion.provincia, est.direccion.localidad);
             let estudiante;
             if (est.fechaGraduacion) {
@@ -44,7 +48,10 @@ function cargarListaEstudiantes() {
             });
             estudiante.matriculas = est.matriculas;
             return estudiante;
-        });
+        }).filter(est => est !== null); // Filtrar estudiantes nulos
+        listaEstudiantes.setEstudiantes(estudiantes);
+    } else {
+        listaEstudiantes.setEstudiantes([]); // Inicializar lista vacía si no hay datos en localStorage
     }
 }
 
@@ -191,7 +198,7 @@ document.querySelector('#formAñadirEstudianteGraduado').addEventListener('submi
     }
 
     const localidadGraduadoInput = document.querySelector('#localidadGraduado');
-    if (!localidadInput.validity.valid) {
+    if (!localidadGraduadoInput.validity.valid) {
         esValido = false;
         validarCampo(localidadGraduadoInput, 'errorLocalidadGraduado');
     }

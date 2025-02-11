@@ -21,6 +21,10 @@ class ListaEstudiantes {
         return this.#estudiantes;
     }
 
+    setEstudiantes(estudiantes) {
+        this.#estudiantes = estudiantes;
+    }
+
     /**
      * Agrega un estudiante a la lista si no existe otro con el mismo ID.
      * 
