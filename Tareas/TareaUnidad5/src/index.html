@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Estudiantes</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet">
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      defer></script>
+    <script src="js/script.js" defer type="module" ></script>
+    <link rel="stylesheet" href="estilos/styles.css">
+    <script>
+      // Cargar los modales desde la carpeta html/modals.html
+      fetch('html/modals.html')
+        .then(response => response.text())
+        .then(html => {
+          document.getElementById('contenedorModales').innerHTML = html;
+        })
+        .catch(error => console.error('Error cargando los modales:', error));
+    </script>
+
+  </head>
+  <body>
+    <main class="container mt-5">
+      <h1 class="text-center">Gestión de Estudiantes</h1>
+
+      <!-- Menú Principal -->
+      <section class="row mt-4">
+        <article id="contenedorBotones" class="col-md-6 offset-md-3">
+
+          <!-- Botón Añadir (submenú con Collapse de Bootstrap) -->
+          <div class="accordion" id="accordionAñadir">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingAñadir">
+                <button class="btn btn-primary w-100 mb-2 accordion-button"
+                  type="button" data-bs-toggle="collapse"
+                  data-bs-target="#botonesAñadir" aria-expanded="true"
+                  aria-controls="botonesAñadir">
+                  Añadir
+                </button>
+              </h2>
+              <div id="botonesAñadir" class="accordion-collapse collapse"
+                aria-labelledby="headingAñadir"
+                data-bs-parent="#accordionAñadir">
+                <div class="accordion-body">
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAñadirEstudiante">Añadir
+                    Estudiante</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAñadirEstudianteGraduado">Añadir
+                    Estudiante
+                    Graduado</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAñadirAsignatura">Añadir
+                    Asignatura</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAñadirCalificacion">Añadir
+                    Calificación</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón Eliminar (submenú con Collapse de Bootstrap) -->
+          <div class="accordion" id="accordionEliminar">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingEliminar">
+                <button class="btn btn-danger w-100 mb-2 accordion-button"
+                  type="button" data-bs-toggle="collapse"
+                  data-bs-target="#botonesEliminar" aria-expanded="true"
+                  aria-controls="botonesEliminar">
+                  Eliminar
+                </button>
+              </h2>
+              <div id="botonesEliminar" class="accordion-collapse collapse"
+                aria-labelledby="headingEliminar"
+                data-bs-parent="#accordionEliminar">
+                <div class="accordion-body">
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEliminarEstudiante">Eliminar
+                    Estudiante</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEliminarAsignatura">Desmatricular
+                    Estudiante</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalEliminarCalificacion">Eliminar
+                    Calificaciones</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submenú Buscar -->
+          <div class="accordion" id="accordionBuscar">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingBuscar">
+                <button class="btn btn-success w-100 mb-2 accordion-button"
+                  type="button" data-bs-toggle="collapse"
+                  data-bs-target="#botonesBuscar" aria-expanded="true"
+                  aria-controls="botonesBuscar">
+                  Buscar
+                </button>
+              </h2>
+              <div id="botonesBuscar" class="accordion-collapse collapse"
+                aria-labelledby="headingBuscar"
+                data-bs-parent="#accordionBuscar">
+                <div class="accordion-body">
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalBuscarEstudiante">Buscar
+                    Estudiante</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalBuscarEstudianteGraduado">Buscar
+                    Estudiante
+                    Graduado</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalBuscarAsignatura">Buscar
+                    Asignatura</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Submenú Calcular Promedio -->
+          <div class="accordion" id="accordionCalcular">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingCalcular">
+                <button class="btn btn-warning w-100 mb-2 accordion-button"
+                  type="button" data-bs-toggle="collapse"
+                  data-bs-target="#botonesCalcular" aria-expanded="true"
+                  aria-controls="botonesCalcular">
+                  Calcular Promedio
+                </button>
+              </h2>
+              <div id="botonesCalcular" class="accordion-collapse collapse"
+                aria-labelledby="headingCalcular"
+                data-bs-parent="#accordionCalcular">
+                <div class="accordion-body">
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalMostrarPromedioEstudiante">Calcular
+                    Promedio x
+                    Estudiante</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalPromedioAsignatura">Calcular Promedio
+                    x
+                    Asignatura</button>
+                  <button class="btn btn-primary w-100 mb-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalPromedioGeneral">Calcular Promedio
+                    General</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón Generar Reporte -->
+          <button id="btnGenerarReporte" class="btn btn-info w-100 mb-2">Generar Reporte</button>
+        </article>
+      </section>
+
+    </main>
+    <div id="contenedorModales"></div>
+  </body>
+</html>
