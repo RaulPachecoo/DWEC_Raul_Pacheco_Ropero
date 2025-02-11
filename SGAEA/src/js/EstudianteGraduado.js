@@ -52,6 +52,7 @@ class EstudianteGraduado extends Estudiante {
         const promedioBase = super.calcularPromedio();
         return promedioBase + 0.5; // Añadir una ponderación adicional para estudiantes graduados.
     }
+    
 
     toString() {
         return `Estudiante Graduado: ${this.nombre} (ID: ${this.id})

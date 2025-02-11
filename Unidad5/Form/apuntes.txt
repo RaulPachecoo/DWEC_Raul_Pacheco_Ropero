@@ -1,0 +1,27 @@
+Validación de form en el cliente
+
+NO es recom validar solo en el cliente
+
+Parámetros en cuanto a la validación:
+- Método -> nativa [HTML], JavaScript, mmixto
+- cuándo 
+    - nativa -> al enviar el formulario
+    - Si es JS o mixto -> cuando yo quiera (eventos) 'input', 'focusout', 'submit'
+- mensajes de error: nativos o personalizados (JS)
+- estilo de los campos cuando son válidos y no válidos: Nativa o JS
+
+-mensajes de error:
+    - nativos -> DEBE HABER REGLAS DE VALIDACIÓN NATIVAS. Se mandan al MANDAR EL FORMULARIO
+    - JS -> 
+        - Modificando el DOM (eventos y modificación del DOM)
+        - aprovechar los mensajes nativos
+            - campo.setCustomValidity("msj") -> establecer un mensaje de error para un campo. Se namda cuando se envía el formulario
+            - campo.reportValidity() -> mandar el msj inmediatamente
+
+
+JS 
+Ventajas
+    - reglas -> las que yo quiera
+    - momento -> cuando quiera (nativo=enviar)
+
+Misxta

@@ -1,0 +1,15 @@
+/*SI CUMPLEN LAS RESTRICCIONES SEGÚN LA VAKIDACIÓN NATIVA*/
+input:valid{
+    background-color: rgb(179, 247, 179);
+    border-color: green;
+}
+
+/*NO CUMPLEN LAS RESTRICCIONES SEGÚN LA VAKIDACIÓN NATIVA*/
+input:invalid{
+    background-color: #fdd;
+    border-color: red;
+}
+
+input:invalid:focus{
+    font-size: 1.15rem;
+}

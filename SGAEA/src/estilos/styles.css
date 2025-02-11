@@ -1,41 +1,39 @@
-body {
-    background-color: lightblue; /* Funciona en casi todos los navegadores */
-    display: grid; /* No funciona en IE 10 y anteriores */
-    place-items: center; /* No funciona en IE 10 y anteriores */
-    height: 100vh;
-    margin: 0;
-    font-family: Arial, sans-serif;
+/* Estilo para los mensajes de error */
+.text-danger {
+    color: red;
 }
 
-.container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px; /* No funciona en IE 8 y anteriores */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* No funciona en IE 8 y anteriores */
-    text-align: center;
-    width: 300px;
+/* Estilo para campos invalidos usando la pseudo-clase :invalid */
+#formAñadirEstudiante input:invalid {
+    border-color: red; /* Borde rojo para campos invalidos */
 }
 
-h1 {
-    font-size: 2rem; /* Las unidades rem no funcionan en IE 8 y anteriores */
-    margin-bottom: 10px;
+/* Estilo para campos válidos usando la pseudo-clase :valid */
+#formAñadirEstudiante input:valid {
+    border-color: green; /* Borde verde para campos válidos */
 }
 
-p {
-    font-size: 1rem;
-    line-height: 1.5; /* No funciona en IE 8 y anteriores */
+#formAñadirEstudianteGraduado input:invalid{
+    border-color: red; ;
 }
 
-button {
-    background: linear-gradient(to right, blue, green); /* No funciona en IE 9 y anteriores */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: transform 0.3s ease; /* No funciona en IE 9 y anteriores */
+#formAñadirEstudianteGraduado input:valid{
+    border-color:green; 
 }
 
-button:hover {
-    transform: scale(1.1); /* No funciona en IE 9 y anteriores */
+#formAñadirAsignatura input:invalid{
+    border-color: red;
 }
+
+#formAñadirAsignatura input:valid{
+    border-color: valid; 
+}
+
+#formAñadirCalificacion input:invalid{
+    border-color: red;
+}
+
+#formAñadirCalificacion input:valid{
+    border-color: valid; 
+}
+

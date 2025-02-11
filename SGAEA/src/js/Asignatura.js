@@ -50,7 +50,6 @@ class Asignatura {
         return suma / todasLasCalificaciones.length;
     }
 
-
     /**
      * Agrega una calificación para un estudiante en la asignatura.
      * 

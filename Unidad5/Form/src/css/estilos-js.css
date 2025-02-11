@@ -1,0 +1,22 @@
+.valido{
+    background-color: #dbf7db;
+    border-color: green;
+}
+
+.no-valido{
+    background-color: #fdd;
+    border-color: red;
+}
+
+.no-valido:focus{
+    font-size: 1.15rem;
+}
+
+.oculto{
+    display: none;
+}
+
+.error{
+    font-size: 0.75rem;
+    color: red;
+}

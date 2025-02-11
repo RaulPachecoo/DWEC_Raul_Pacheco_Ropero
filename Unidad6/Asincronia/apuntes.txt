@@ -1,0 +1,68 @@
+Sincronia/Asincronia
+
+CICLO DE EVENTOS (event loop) -> cómo se ejecutan las instr en JS
+
+    pila de ejecuciones (call stack) -> inst síncronas. 
+    cola de microtareas -> 
+    cola de tareas (task queue) -> instr asíncronas
+
+
+mecanismos
+    -funciones globales- setTimeout, setInterval
+    -eventos
+    -callbacks (funciones de retorno) hasta ES6
+    -promesas: surgen en 2015 (ES6)
+
+
+# Promesas
+Un obj que repr, el estado de unaop asincr
+-Pendiente (pending)
+-Cumplida (fullfiled)
+-Rechazada (rejected)
+
+Métodos 
+    then() -> gest el resultado cuando tiene exito
+    catch()  -> resultado cuando NO tiene éxito
+    finally() -> opcional
+
+    Promise.all() -> espero a todas las promesas y resuelvo si todas resuelven (AND)
+    any() -> espero a todas las promesas y devuelvo solo la primera que se resuleve
+    race()
+    allSettled()
+
+
+promesa.then(
+    código que lee datos
+).catch{
+    código de error
+}
+
+
+API fetch
+    -fetch -> hace la solicitud
+    -request -> solicitud HTTP
+    -response -> respuesta del servidor
+        -status -> 200, 203, 403, 404
+        -ok (if (response.ok) ya tengo el recurso)
+        -body
+        -headers
+        -url
+        -type (basic, cors, etc.)
+        -json()
+        -blob (imagen, pdf)
+        -text()
+    -Headers
+    -formData
+        
+
+-flujo de trabajo: 
+    -solicitud HTTP (fetch(url)) -> return Promise
+    -usar métodos del objeto promise para interactuar con promesa
+        -.then si se resuelve
+        -.catch si se rechaza
+    -la prom. devuelve response
+    -comprobar objeto response
+
+
+
+Sintaxis nueva: ES8 (2017) await/async desaparecen then y catch
