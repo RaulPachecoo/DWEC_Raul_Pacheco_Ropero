@@ -5,65 +5,82 @@ import ListaEstudiantes from './ListaEstudiantes.js';
 
 // Función para manejar la validación de cada campo
 function validarCampo(input, errorMessageId) {
-    const errorMessage = document.getElementById(errorMessageId); // Obtener el mensaje de error
+    const errorMessage = document.getElementById(errorMessageId);
 
-    if (!input.validity.valid) {
-        input.classList.add('no-valido');
-        input.classList.remove('valido');
-        errorMessage.style.display = 'block'; // Mostrar el mensaje de error personalizado
+    // Si no se encuentra el mensaje de error, se retorna verdadero (no hay error)
+    if (!errorMessage) return true;
+
+    // Si el campo no es válido o está vacío
+    if (!input.validity.valid || input.value.trim() === "") {
+        input.classList.add('no-valido');   // Añadir clase 'no-valido' para marcar el campo como inválido
+        input.classList.remove('valido');   // Remover clase 'valido' si está presente
+        errorMessage.style.display = 'block';  // Mostrar el mensaje de error
+        return false;  // Retornar falso ya que el campo no es válido
     } else {
-        input.classList.add('valido');
-        input.classList.remove('no-valido');
-        errorMessage.style.display = 'none'; // Ocultar el mensaje de error
+        input.classList.add('valido');  // Añadir clase 'valido' si el campo es válido
+        input.classList.remove('no-valido');  // Remover clase 'no-valido'
+        errorMessage.style.display = 'none';  // Ocultar el mensaje de error
+        return true;  // Retornar verdadero si el campo es válido
     }
 }
 
-let listaEstudiantes = new ListaEstudiantes();
+// Lista de estudiantes
+let listaEstudiantes = new ListaEstudiantes();  // Crear una nueva lista de estudiantes
 
 // Función para guardar la lista de estudiantes en localStorage
 function guardarListaEstudiantes() {
+    // Guardar la lista de estudiantes como una cadena JSON en localStorage
     localStorage.setItem('listaEstudiantes', JSON.stringify(listaEstudiantes.estudiantes));
 }
 
 // Función para cargar la lista de estudiantes desde localStorage
 function cargarListaEstudiantes() {
+    // Obtener los estudiantes guardados de localStorage
     const estudiantesGuardados = localStorage.getItem('listaEstudiantes');
 
-    if (!estudiantesGuardados) {
+    // Si no hay estudiantes guardados en localStorage
+    if (!estudiantesGuardados) { 
+        // Parsear los datos y crear instancias de Estudiante o EstudianteGraduado
         const estudiantes = JSON.parse(estudiantesGuardados).map(est => {
             if (!est.direccion) {
-                alert(`El estudiante con ID ${est.id} no tiene una dirección definida.`);
+                alert(`El estudiante con ID ${est.id} no tiene una dirección definida.`);  // Si falta la dirección, mostrar alerta
                 return null;
             }
-            const direccion = new Direccion(est.direccion.calle, est.direccion.numero, est.direccion.piso, est.direccion.codigoPostal, est.direccion.provincia, est.direccion.localidad);
+            // Crear una nueva dirección
+            const direccion = new Direccion(
+                est.direccion.calle, est.direccion.numero, est.direccion.piso,
+                est.direccion.codigoPostal, est.direccion.provincia, est.direccion.localidad
+            );
             let estudiante;
+            // Si el estudiante tiene fecha de graduación, crearlo como EstudianteGraduado
             if (est.fechaGraduacion) {
                 estudiante = new EstudianteGraduado(est.nombre, est.edad, direccion, new Date(est.fechaGraduacion), est.titulo);
             } else {
-                estudiante = new Estudiante(est.nombre, est.edad, direccion);
+                estudiante = new Estudiante(est.nombre, est.edad, direccion);  // Si no, crearlo como Estudiante normal
             }
+            // Mapear las asignaturas del estudiante
             estudiante.asignaturas = est.asignaturas.map(asig => {
                 const asignatura = new Asignatura(asig.nombre);
                 asignatura.calificaciones = asig.calificaciones;
                 return asignatura;
             });
-            estudiante.matriculas = est.matriculas;
+            estudiante.matriculas = est.matriculas;  // Asignar las matrículas del estudiante
             return estudiante;
-        }).filter(est => est !== null); // Filtrar estudiantes nulos
-        listaEstudiantes.setEstudiantes(estudiantes);
+        }).filter(est => est !== null);  // Filtrar null si hubo algún error al procesar el estudiante
+        listaEstudiantes.setEstudiantes(estudiantes);  // Establecer la lista de estudiantes
     } else {
-        listaEstudiantes.setEstudiantes([]); // Inicializar lista vacía si no hay datos en localStorage
+        listaEstudiantes.setEstudiantes([]);  // Si no hay datos, establecer una lista vacía
     }
 }
 
-// Cargar la lista de estudiantes al iniciar
+// Cargar la lista de estudiantes al iniciar la página
 cargarListaEstudiantes();
 
 // Función para manejar el envío del formulario de añadir estudiantes
 document.getElementById('formAñadirEstudiante').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evitar que el formulario se envíe por defecto
+    event.preventDefault();  // Prevenir que el formulario recargue la página al enviarlo
 
-    // Obtener los valores de los campos
+    // Obtener los valores de los campos del formulario
     const nombre = document.getElementById('nombreEstudiante').value;
     const edad = parseInt(document.getElementById('edadEstudiante').value);
     const direccion = {
@@ -75,205 +92,251 @@ document.getElementById('formAñadirEstudiante').addEventListener('submit', func
         localidad: document.getElementById('localidadEstudiante').value
     };
 
-    let esValido = true;
+    let esValido = true;  // Variable para verificar si el formulario es válido
 
-    // Validar nombre
-    const nombreInput = document.getElementById('nombreEstudiante');
-    if (!nombreInput.validity.valid) {
-        esValido = false;
-        validarCampo(nombreInput, 'errorNombre');
-    }
+    // Lista de campos a validar
+    const campos = [
+        { id: 'nombreEstudiante', errorId: 'errorNombre' },
+        { id: 'edadEstudiante', errorId: 'errorEdad' },
+        { id: 'calleEstudiante', errorId: 'errorCalle' },
+        { id: 'numeroEstudiante', errorId: 'errorNumero' },
+        { id: 'codigoPostalEstudiante', errorId: 'errorCodigoPostal' },
+        { id: 'provinciaEstudiante', errorId: 'errorProvincia' },
+        { id: 'localidadEstudiante', errorId: 'errorLocalidad' }
+    ];
 
-    const edadInput = document.getElementById('edadEstudiante');
-    if (!edadInput.validity.valid) {
-        esValido = false;
-        validarCampo(edadInput, 'errorEdad');
-    }
+    // Validar todos los campos definidos en la lista de campos
+    campos.forEach(({ id, errorId }) => {
+        const input = document.getElementById(id);  // Obtener el campo de entrada
+        if (!validarCampo(input, errorId)) esValido = false;  // Si alguna validación falla, marcar el formulario como no válido
+    });
 
-    const calleInput = document.getElementById('calleEstudiante');
-    if (!calleInput.validity.valid) {
-        esValido = false;
-        validarCampo(calleInput, 'errorCalle');
-    }
-
-    const numeroInput = document.getElementById('numeroEstudiante');
-    if (!numeroInput.validity.valid) {
-        esValido = false;
-        validarCampo(numeroInput, 'errorNumero');
-    }
-
-    const codigoPostalInput = document.getElementById('codigoPostalEstudiante');
-    if (!codigoPostalInput.validity.valid) {
-        esValido = false;
-        validarCampo(codigoPostalInput, 'errorCodigoPostal');
-    }
-
-    const provinciaInput = document.getElementById('provinciaEstudiante');
-    if (!provinciaInput.validity.valid) {
-        esValido = false;
-        validarCampo(provinciaInput, 'errorProvincia');
-    }
-
-    const localidadInput = document.getElementById('localidadEstudiante');
-    if (!localidadInput.validity.valid) {
-        esValido = false;
-        validarCampo(localidadInput, 'errorLocalidad');
-    }
-
-    // Si el formulario es válido, procesamos los datos
+    // Si el formulario es válido
     if (esValido) {
-        let estudiante = new Estudiante(nombre, edad, new Direccion(direccion.calle, direccion.numero, direccion.piso, direccion.codigoPostal, direccion.provincia, direccion.localidad));
+        // Crear un nuevo estudiante con los datos ingresados
+        let estudiante = new Estudiante(nombre, edad, new Direccion(
+            direccion.calle, direccion.numero, direccion.piso,
+            direccion.codigoPostal, direccion.provincia, direccion.localidad
+        ));
+
+        // Agregar el estudiante a la lista
         listaEstudiantes.agregarEstudiante(estudiante);
-        guardarListaEstudiantes(); // Guardar en localStorage
+        // Guardar la lista de estudiantes actualizada en localStorage
+        guardarListaEstudiantes();
 
-        alert("Estudiante añadido correctamente.");
-
-        // Obtener el modal y cerrarlo
-        const modalElement = document.getElementById('modalAñadirEstudiante');
-        const modal = bootstrap.Modal.getInstance(modalElement); // Obtener la instancia del modal
-        modal.hide(); // Cerrar el modal
+        alert("Estudiante añadido correctamente.");  // Mostrar mensaje de éxito
+        cerrarModal('modalAñadirEstudiante');  // Cerrar el modal
     }
 });
 
 
+// Función para manejar el envío del formulario de añadir estudiantes graduados
+document.getElementById('formAñadirEstudianteGraduado').addEventListener('submit', function (event) {
+    event.preventDefault();  // Prevenir el comportamiento predeterminado del formulario (evitar que recargue la página)
 
-// Función para manejar el envío del formulario para Añadir Estudiante Graduado
-document.querySelector('#formAñadirEstudianteGraduado').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evitar que el formulario se envíe por defecto
-
-    // Obtener los valores de los campos
-    const nombreGraduado = document.querySelector('#nombreGraduado').value;
-    const edadGraduado = parseInt(document.querySelector('#edadGraduado').value);
-    const direccionGraduado = {
-        calle: document.querySelector('#calleGraduado').value,
-        numero: parseInt(document.querySelector('#numeroGraduado').value),
-        piso: document.querySelector('#pisoGraduado').value,
-        codigoPostal: document.querySelector('#codigoPostalGraduado').value,
-        provincia: document.querySelector('#provinciaGraduado').value,
-        localidad: document.querySelector('#localidadGraduado').value
+    // Obtener los valores de los campos del formulario
+    const nombre = document.getElementById('nombreGraduado').value;
+    const edad = parseInt(document.getElementById('edadGraduado').value);  // Convertir la edad a número
+    const direccion = {
+        calle: document.getElementById('calleGraduado').value,
+        numero: parseInt(document.getElementById('numeroGraduado').value),  // Convertir el número de la calle a número
+        piso: document.getElementById('pisoGraduado').value,
+        codigoPostal: document.getElementById('codigoPostalGraduado').value,
+        provincia: document.getElementById('provinciaGraduado').value,
+        localidad: document.getElementById('localidadGraduado').value
     };
+    const fechaGraduacion = new Date(document.getElementById('fechaGraduacion').value);  // Obtener la fecha de graduación
+    const titulo = document.getElementById('titulo').value;  // Obtener el título del estudiante
 
-    const fechaGraduacion = new Date(document.querySelector('#fechaGraduacion').value);
-    const titulo = document.querySelector('#titulo').value;
+    let esValido = true;  // Variable para verificar si todos los campos son válidos
 
-    // Validar los campos antes de procesar
-    let esValido = true;
+    // Lista de campos a validar, con sus respectivos IDs y mensajes de error
+    const campos = [
+        { id: 'nombreGraduado', errorId: 'errorNombreGraduado' },
+        { id: 'edadGraduado', errorId: 'errorEdadGraduado' },
+        { id: 'calleGraduado', errorId: 'errorCalleGraduado' },
+        { id: 'numeroGraduado', errorId: 'errorNumeroGraduado' },
+        { id: 'codigoPostalGraduado', errorId: 'errorCodigoPostalGraduado' },
+        { id: 'provinciaGraduado', errorId: 'errorProvinciaGraduado' },
+        { id: 'localidadGraduado', errorId: 'errorLocalidadGraduado' },
+        { id: 'fechaGraduacion', errorId: 'errorFechaGraduacion' },
+        { id: 'titulo', errorId: 'errorTitulo' }
+    ];
 
-    // Validar nombreGraduado
-    const nombreGraduadoInput = document.querySelector('#nombreGraduado');
-    if (!nombreGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(nombreGraduadoInput, 'errorNombreGraduado');
-    }
+    // Validar cada campo utilizando la función 'validarCampo'
+    campos.forEach(({ id, errorId }) => {
+        const input = document.getElementById(id);  // Obtener el campo de entrada
+        if (!validarCampo(input, errorId)) esValido = false;  // Si el campo no es válido, marcar esValido como falso
+    });
 
-    // Validar edadGraduado
-    const edadGraduadoInput = document.querySelector('#edadGraduado');
-    if (!edadGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(edadGraduadoInput, 'errorEdadGraduado');
-    }
-
-    // Validar los campos de dirección
-    const calleGraduadoInput = document.querySelector('#calleGraduado');
-    if (!calleGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(calleGraduadoInput, 'errorCalleGraduado');
-    }
-
-    const numeroGraduadoInput = document.querySelector('#numeroGraduado');
-    if (!numeroGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(numeroGraduadoInput, 'errorNumeroGraduado');
-    }
-
-    const codigoPostalGraduadoInput = document.querySelector('#codigoPostalGraduado');
-    if (!codigoPostalGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(codigoPostalGraduadoInput, 'errorCodigoPostalGraduado');
-    }
-
-    const provinciaGraduadoInput = document.querySelector('#provinciaGraduado');
-    if (!provinciaGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(provinciaGraduadoInput, 'errorProvinciaGraduado');
-    }
-
-    const localidadGraduadoInput = document.querySelector('#localidadGraduado');
-    if (!localidadGraduadoInput.validity.valid) {
-        esValido = false;
-        validarCampo(localidadGraduadoInput, 'errorLocalidadGraduado');
-    }
-
-
-    const fechaGraduacionInput = document.querySelector('#fechaGraduacion');
-    if (!fechaGraduacionInput.validity.valid) {
-        esValido = false;
-        validarCampo(fechaGraduacionInput, 'errorFechaGraduacion');
-    }
-
-    const tituloInput = document.querySelector('#titulo');
-    if (!tituloInput.validity.valid) {
-        esValido = false;
-        validarCampo(tituloInput, 'errorTitulo');
-    }
-
-    // Si el formulario es válido, procesamos los datos
+    // Si todos los campos son válidos, crear el estudiante graduado y añadirlo a la lista
     if (esValido) {
+        // Crear un nuevo objeto EstudianteGraduado
         let estudianteGraduado = new EstudianteGraduado(
-            nombreGraduado,
-            edadGraduado,
-            new Direccion(direccionGraduado.calle, direccionGraduado.numero, direccionGraduado.piso, direccionGraduado.codigoPostal, direccionGraduado.provincia, direccionGraduado.localidad),
-            fechaGraduacion,
-            titulo
+            nombre, edad, new Direccion(
+                direccion.calle, direccion.numero, direccion.piso,
+                direccion.codigoPostal, direccion.provincia, direccion.localidad
+            ), fechaGraduacion, titulo
         );
-
-        // Agregar estudiante graduado a la lista
+        // Añadir el estudiante graduado a la lista de estudiantes
         listaEstudiantes.agregarEstudiante(estudianteGraduado);
-        guardarListaEstudiantes(); // Guardar en localStorage
-        alert("Estudiante graduado añadido correctamente.");
+        // Guardar la lista actualizada en localStorage
+        guardarListaEstudiantes();
 
-        // Cerrar el modal después de enviar el formulario
-        const modalElement = document.querySelector('#modalAñadirEstudianteGraduado');
-        const modal = bootstrap.Modal.getInstance(modalElement); // Obtener la instancia del modal
-        modal.hide(); // Cerrar el modal
+        alert("Estudiante graduado añadido correctamente.");  // Mostrar mensaje de éxito
+        cerrarModal('modalAñadirEstudianteGraduado');  // Cerrar el modal de añadir estudiante graduado
     }
 });
+
+// Manejo de pasos del formulario
+document.addEventListener("DOMContentLoaded", function () {
+    // Obtener todos los pasos, botones de siguiente y anterior del formulario
+    const botonesSiguiente = document.querySelectorAll(".next-step");
+    const botonesAnterior = document.querySelectorAll(".prev-step");
+
+    // Función para validar todos los campos de un paso
+    function validarPaso(numeroPaso, idFormulario) {
+        let esValido = true;
+        // Validar cada campo dentro del paso específico
+        document.querySelectorAll(`#${idFormulario} #step-${numeroPaso} input`).forEach(input => {
+            const idError = input.getAttribute("data-error");
+            if (!validarCampo(input, idError)) esValido = false;  // Si un campo no es válido, marcar como no válido
+        });
+        return esValido;  // Retornar si el paso es válido o no
+    }
+
+    // Función para mostrar un paso del formulario
+    function mostrarPaso(numeroPaso, idFormulario) {
+        // Ocultar todos los pasos
+        document.querySelectorAll(`#${idFormulario} .form-step`).forEach((paso) => paso.classList.add("d-none"));
+        // Mostrar solo el paso actual
+        document.querySelector(`#${idFormulario} #step-${numeroPaso}`).classList.remove("d-none");
+        // Actualizar el historial para reflejar el paso actual en la URL
+        history.pushState({ step: numeroPaso, formId: idFormulario }, "", `?step=${numeroPaso}&formId=${idFormulario}`);
+    }
+
+    // Evento para el botón "siguiente"
+    botonesSiguiente.forEach((boton) => {
+        boton.addEventListener("click", function () {
+            const pasoActual = parseInt(this.getAttribute("data-step")) - 1;  // Obtener el paso actual
+            const pasoSiguiente = parseInt(this.getAttribute("data-step"));  // Obtener el siguiente paso
+            const idFormulario = this.closest("form").id;  // Obtener el ID del formulario al que pertenece el botón
+
+            // Si el paso actual es válido, avanzar al siguiente paso
+            if (validarPaso(pasoActual, idFormulario)) {
+                mostrarPaso(pasoSiguiente, idFormulario);
+                history.forward();  // Avanzar en el historial
+            }
+        });
+    });
+
+    // Evento para el botón "anterior"
+    botonesAnterior.forEach((boton) => {
+        boton.addEventListener("click", function () {
+            const paso = this.getAttribute("data-step");  // Obtener el paso al que retroceder
+            const idFormulario = this.closest("form").id;  // Obtener el ID del formulario
+            mostrarPaso(paso, idFormulario);  // Mostrar el paso anterior
+            history.back();  // Retroceder en el historial
+        });
+    });
+
+    // Evento para detectar cambios en el historial (cuando se navega con los botones de retroceder/avanzar del navegador)
+    window.addEventListener("popstate", function (evento) {
+        if (evento.state && evento.state.step && evento.state.formId) {
+            mostrarPaso(evento.state.step, evento.state.formId);  // Mostrar el paso según el estado del historial
+        }
+    });
+
+    // Obtener los parámetros de la URL (para recuperar el paso y formulario actual)
+    const parametrosUrl = new URLSearchParams(window.location.search);
+    const pasoActual = parametrosUrl.get("step") || "1";  // Paso actual, por defecto es el primer paso
+    const idFormulario = parametrosUrl.get("formId") || "formAñadirEstudiante";  // ID del formulario, por defecto es "formAñadirEstudiante"
+    mostrarPaso(pasoActual, idFormulario);  // Mostrar el paso y formulario correctos al cargar la página
+
+    // Ahora 'mostrarPaso' estará disponible globalmente para ser utilizado en otras partes del código
+    window.mostrarPaso = mostrarPaso;
+});
+
+
+// Función para cerrar el modal después de añadir un estudiante y volver al paso 1
+function cerrarModal(idModal) {
+    const modalElemento = document.getElementById(idModal);  // Obtener el elemento del modal utilizando su ID
+    const modal = bootstrap.Modal.getInstance(modalElemento);  // Obtener la instancia del modal de Bootstrap
+    modal.hide();  // Ocultar el modal
+    reiniciarFormulario(idModal);  // Llamar a la función para reiniciar el formulario
+}
+
+// Función para reiniciar el formulario al abrir el modal
+function reiniciarFormulario(idModal) {
+    // Determinar el ID del formulario correspondiente según el modal abierto
+    const idFormulario = idModal === 'modalAñadirEstudiante' ? 'formAñadirEstudiante' : 'formAñadirEstudianteGraduado';
+
+    // Resetear el formulario (limpiar los campos)
+    document.getElementById(idFormulario).reset();
+
+    // Eliminar las clases 'no-valido' de los campos que estaban marcados como no válidos
+    document.querySelectorAll(`#${idFormulario} .no-valido`).forEach(el => el.classList.remove('no-valido'));
+    
+    // Eliminar las clases 'valido' de los campos que estaban marcados como válidos
+    document.querySelectorAll(`#${idFormulario} .valido`).forEach(el => el.classList.remove('valido'));
+
+    // Ocultar los mensajes de error (en caso de haber alguno visible)
+    document.querySelectorAll(`#${idFormulario} .text-danger`).forEach(el => el.style.display = 'none');
+
+    // Si la función 'mostrarPaso' está definida, reiniciar el paso del formulario al paso 1
+    if (typeof mostrarPaso === "function") {
+        mostrarPaso(1, idFormulario);  // Mostrar el primer paso del formulario
+    }
+}
+
+// Asegurar que el modal siempre inicie en el primer paso
+document.getElementById('modalAñadirEstudiante').addEventListener('show.bs.modal', function () {
+    reiniciarFormulario('modalAñadirEstudiante');  // Reiniciar el formulario al abrir el modal
+});
+
+document.getElementById('modalAñadirEstudianteGraduado').addEventListener('show.bs.modal', function () {
+    reiniciarFormulario('modalAñadirEstudianteGraduado');  // Reiniciar el formulario al abrir el modal
+});
+
 
 
 // Manejo del formulario para matricular asignaturas
-document.getElementById('formAñadirAsignatura').addEventListener('submit', function (event) {
-    event.preventDefault(); // Evita que el formulario recargue la página
+document.getElementById('formAñadirAsignatura').addEventListener('submit', function (evento) {
+    evento.preventDefault();  // Evita que el formulario recargue la página
 
     let valido = true;
 
+    // Obtener el campo de ID de estudiante y validar
     const idEstudianteMatricular = document.getElementById('idEstudianteMatricular');
     validarCampo(idEstudianteMatricular, 'errorIdEstudianteMatricular');
     if (!idEstudianteMatricular.validity.valid) {
-        valido = false;
+        valido = false;  // Marcar como no válido si el ID no es válido
     }
 
+    // Obtener el campo de nombre de asignatura y validar
     const nombreAsignaturaMatricular = document.getElementById('nombreAsignaturaMatricular');
     validarCampo(nombreAsignaturaMatricular, 'errorNombreAsignaturaMatricular');
     if (!nombreAsignaturaMatricular.validity.valid) {
-        valido = false;
+        valido = false;  // Marcar como no válido si el nombre de asignatura no es válido
     }
 
+    // Si todo es válido
     if (valido) {
-        const estudianteMatricular = listaEstudiantes.buscarEstudiantePorID(parseInt(idEstudianteMatricular.value));
+        const estudianteMatricular = listaEstudiantes.buscarEstudiantePorID(parseInt(idEstudianteMatricular.value));  // Buscar estudiante por ID
 
         if (!estudianteMatricular) {
-            alert("Estudiante no encontrado.");
+            alert("Estudiante no encontrado.");  // Mostrar mensaje si el estudiante no existe
             return;
         }
 
         // Matricular la asignatura
         estudianteMatricular.matricularAsignatura(nombreAsignaturaMatricular.value);
-        alert("Asignatura matriculada correctamente.");
-        guardarListaEstudiantes(); // Guardar en localStorage
+        alert("Asignatura matriculada correctamente.");  // Mostrar mensaje de éxito
+        guardarListaEstudiantes();  // Guardar la lista actualizada de estudiantes en localStorage
 
         // Cerrar el modal
-        const modalElement = document.getElementById('modalAñadirAsignatura');
-        const modal = bootstrap.Modal.getInstance(modalElement);
+        const modalElemento = document.getElementById('modalAñadirAsignatura');
+        const modal = bootstrap.Modal.getInstance(modalElemento);
         modal.hide();
 
         // Limpiar el formulario SOLO si todo está correcto
@@ -350,11 +413,7 @@ document.getElementById('formAñadirCalificacion').addEventListener('submit', fu
         // Limpiar el formulario
         document.getElementById('formAñadirCalificacion').reset();
     }
-
-
 });
-
-
 
 // Función para cargar estudiantes en el select del modal
 function cargarEstudiantesEnSelectEliminar() {
@@ -404,9 +463,6 @@ document.getElementById('formEliminarEstudiante').addEventListener('submit', fun
 
 // Cargar estudiantes cuando se abre el modal
 document.getElementById('modalEliminarEstudiante').addEventListener('show.bs.modal', cargarEstudiantesEnSelectEliminar);
-
-
-
 
 // Función para cargar estudiantes en el select del modal
 function cargarEstudiantesEnSelectEliminarAsignatura() {
@@ -471,8 +527,6 @@ document.getElementById('formEliminarAsignatura').addEventListener('submit', fun
 
 //  Cargar estudiantes cuando se abre el modal
 document.getElementById('modalEliminarAsignatura').addEventListener('show.bs.modal', cargarEstudiantesEnSelectEliminarAsignatura);
-
-
 
 // Cargar estudiantes en el select cuando se abre el modal
 function cargarEstudiantesEnSelectEliminarCalif() {
@@ -547,7 +601,6 @@ document.getElementById('formEliminarCalificacion').addEventListener('submit', f
 // Cargar estudiantes cuando se abre el modal
 document.getElementById('modalEliminarCalificacion').addEventListener('show.bs.modal', cargarEstudiantesEnSelectEliminarCalif);
 
-
 // Cargar estudiantes en el select cuando se abre el modal
 function cargarEstudiantesEnSelectPromedio() {
     const selectEstudiante = document.getElementById('idEstudiantePromedio');
@@ -592,7 +645,6 @@ document.getElementById('formMostrarPromedio').addEventListener('submit', functi
 // Cargar estudiantes cuando se abre el modal
 document.getElementById('modalMostrarPromedioEstudiante').addEventListener('show.bs.modal', cargarEstudiantesEnSelectPromedio);
 
-
 // Manejar el cálculo del promedio de una asignatura
 document.getElementById('formPromedioAsignatura').addEventListener('submit', function (event) {
     event.preventDefault();
@@ -613,7 +665,6 @@ document.getElementById('formPromedioAsignatura').addEventListener('submit', fun
         resultadoPromedioAsignatura.textContent = `${promedio.toFixed(2)}`;
     }
 });
-
 
 // Manejar el cálculo del promedio general
 document.getElementById('btnCalcularPromedioGeneral').addEventListener('click', function () {
@@ -650,7 +701,6 @@ document.getElementById('btnBuscarEstudiante').addEventListener('click', functio
     }
 });
 
-
 // Manejar la búsqueda de estudiantes graduados
 document.getElementById('btnBuscarEstudianteGraduado').addEventListener('click', function () {
     const patronGraduado = document.getElementById('patronBusquedaGraduado').value.trim();
@@ -672,7 +722,6 @@ document.getElementById('btnBuscarEstudianteGraduado').addEventListener('click',
         });
     }
 });
-
 
 // Manejar la búsqueda de asignaturas
 document.getElementById('btnBuscarAsignatura').addEventListener('click', function () {

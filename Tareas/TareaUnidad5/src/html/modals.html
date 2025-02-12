@@ -1,616 +1,664 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="../js/script.js"></script>
-</head>
-<body>  
+  </head>
+  <body>
     <!-- Modal para Añadir Estudiante -->
-<div class="modal fade" id="modalAñadirEstudiante" tabindex="-1"
-aria-labelledby="modalAñadirEstudianteLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalAñadirEstudianteLabel">Añadir
-        Estudiante</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formAñadirEstudiante" novalidate>
-        <!-- Nombre -->
-        <div class="mb-3">
-          <label for="nombreEstudiante" class="form-label">Nombre del
-            Estudiante</label>
-          <input type="text" class="form-control" id="nombreEstudiante"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorNombre" class="text-danger"
-            style="display: none;">El nombre solo debe contener letras y
-            espacios.</p>
-        </div>
+    <div class="modal fade" id="modalAñadirEstudiante" tabindex="-1"
+      aria-labelledby="modalAñadirEstudianteLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAñadirEstudianteLabel">Añadir
+              Estudiante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAñadirEstudiante" novalidate>
 
-        <!-- Edad -->
-        <div class="mb-3">
-          <label for="edadEstudiante" class="form-label">Edad</label>
-          <input type="number" class="form-control" id="edadEstudiante"
-            required min="0" max="130">
-          <p id="errorEdad" class="text-danger" style="display: none;">La
-            edad debe estar entre 0 y 130 años.</p>
-        </div>
+              <!-- Paso 1: Datos Personales -->
+              <div class="form-step" id="step-1">
+                <h5>Paso 1: Datos Personales</h5>
+                <div class="mb-3">
+                  <label for="nombreEstudiante"
+                    class="form-label">Nombre</label>
+                  <input type="text" class="form-control" id="nombreEstudiante"
+                    required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorNombre">
+                  <p class="text-danger" id="errorNombre">El nombre solo
+                    debe contener letras y espacios.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="edadEstudiante" class="form-label">Edad</label>
+                  <input type="number" class="form-control" id="edadEstudiante"
+                    required min="0" max="130" data-error="errorEdad">
+                  <p class="text-danger" id="errorEdad">La edad debe
+                    estar entre 0 y 130 años.</p>
+                </div>
+                <button type="button" class="btn btn-primary next-step"
+                  data-step="2">Siguiente</button>
+              </div>
 
-        <!-- Dirección -->
-        <h5>Dirección</h5>
-        <div class="mb-3">
-          <label for="calleEstudiante" class="form-label">Calle</label>
-          <input type="text" class="form-control" id="calleEstudiante"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorCalle" class="text-danger" style="display: none;">La
-            calle solo debe contener letras y espacios.</p>
-        </div>
-        <div class="mb-3">
-          <label for="numeroEstudiante" class="form-label">Número</label>
-          <input type="number" class="form-control" id="numeroEstudiante"
-            required>
-          <p id="errorNumero" class="text-danger"
-            style="display: none;">El número debe ser un valor válido.</p>
-        </div>
-        <div class="mb-3">
-          <label for="pisoEstudiante" class="form-label">Piso</label>
-          <input type="text" class="form-control" id="pisoEstudiante">
-          <p id="errorPiso" class="text-danger" style="display: none;">El
-            piso puede estar vacío o debe ser válido.</p>
-        </div>
-        <div class="mb-3">
-          <label for="codigoPostalEstudiante" class="form-label">Código
-            Postal</label>
-          <input type="text" class="form-control"
-            id="codigoPostalEstudiante" required minlength="5"
-            maxlength="5">
-          <p id="errorCodigoPostal" class="text-danger"
-            style="display: none;">El código postal debe tener 5
-            dígitos.</p>
-        </div>
-        <div class="mb-3">
-          <label for="provinciaEstudiante"
-            class="form-label">Provincia</label>
-          <input type="text" class="form-control" id="provinciaEstudiante"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorProvincia" class="text-danger"
-            style="display: none;">La provincia solo debe contener letras
-            y espacios.</p>
-        </div>
-        <div class="mb-3">
-          <label for="localidadEstudiante"
-            class="form-label">Localidad</label>
-          <input type="text" class="form-control" id="localidadEstudiante"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorLocalidad" class="text-danger"
-            style="display: none;">La localidad solo debe contener letras
-            y espacios.</p>
-        </div>
+              <!-- Paso 2: Dirección -->
+              <div class="form-step d-none" id="step-2">
+                <h5>Paso 2: Dirección</h5>
+                <div class="mb-3">
+                  <label for="calleEstudiante" class="form-label">Calle</label>
+                  <input type="text" class="form-control" id="calleEstudiante"
+                    required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorCalle">
+                  <p id="errorCalle" class="text-danger"
+                    style="display: none;">La calle solo debe contener letras y
+                    espacios.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="numeroEstudiante"
+                    class="form-label">Número</label>
+                  <input type="number" class="form-control"
+                    id="numeroEstudiante" required data-error="errorNumero">
+                  <p id="errorNumero" class="text-danger"
+                    style="display: none;">El número es requerido.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="pisoEstudiante" class="form-label">Piso</label>
+                  <input type="text" class="form-control" id="pisoEstudiante">
+                </div>
+                <div class="mb-3">
+                  <label for="codigoPostalEstudiante" class="form-label">Código
+                    Postal</label>
+                  <input type="text" class="form-control"
+                    id="codigoPostalEstudiante" required minlength="5"
+                    maxlength="5" data-error="errorCodigoPostal">
+                  <p id="errorCodigoPostal" class="text-danger"
+                    style="display: none;">El código postal debe ser un número
+                    de
+                    5 dígitos.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="provinciaEstudiante"
+                    class="form-label">Provincia</label>
+                  <input type="text" class="form-control"
+                    id="provinciaEstudiante" required
+                    pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorProvincia">
+                  <p id="errorProvincia" class="text-danger"
+                    style="display: none;">La provincia solo debe contener
+                    letras
+                    y espacios.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="localidadEstudiante"
+                    class="form-label">Localidad</label>
+                  <input type="text" class="form-control"
+                    id="localidadEstudiante" required
+                    pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorLocalidad">
+                  <p id="errorLocalidad" class="text-danger"
+                    style="display: none;">La localidad solo debe contener
+                    letras
+                    y espacios.</p>
+                </div>
+                <button type="button" class="btn btn-secondary prev-step"
+                  data-step="1">Atrás</button>
+                <button type="button" class="btn btn-primary next-step"
+                  data-step="3">Siguiente</button>
+              </div>
 
-        <!-- Botón de Enviar -->
-        <button type="submit" class="btn btn-success">Añadir
-          Estudiante</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
+              <!-- Paso 3: Confirmación -->
+              <div class="form-step d-none" id="step-3">
+                <h5>Paso 3: Confirmación</h5>
+                <p>Revisa los datos antes de enviar.</p>
+                <button type="button" class="btn btn-secondary prev-step"
+                  data-step="2">Atrás</button>
+                <button type="submit" class="btn btn-success">Añadir
+                  Estudiante</button>
+              </div>
 
-<!-- Modal para Añadir Estudiante Graduado -->
-<div class="modal fade" id="modalAñadirEstudianteGraduado" tabindex="-1"
-aria-labelledby="modalAñadirEstudianteGraduadoLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title"
-        id="modalAñadirEstudianteGraduadoLabel">Añadir Estudiante
-        Graduado</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formAñadirEstudianteGraduado" novalidate>
-        <!-- Nombre -->
-        <div class="mb-3">
-          <label for="nombreGraduado" class="form-label">Nombre del
-            Graduado</label>
-          <input type="text" class="form-control" id="nombreGraduado"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorNombreGraduado" class="text-danger"
-            style="display: none;">El nombre solo debe contener letras y
-            espacios.</p>
+            </form>
+          </div>
         </div>
-
-        <!-- Edad -->
-        <div class="mb-3">
-          <label for="edadGraduado" class="form-label">Edad</label>
-          <input type="number" class="form-control" id="edadGraduado"
-            required min="0" max="130">
-          <p id="errorEdadGraduado" class="text-danger"
-            style="display: none;">Edad inválida.</p>
-        </div>
-
-        <!-- Dirección -->
-        <h5>Dirección</h5>
-        <div class="mb-3">
-          <label for="calleGraduado" class="form-label">Calle</label>
-          <input type="text" class="form-control" id="calleGraduado"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorCalleGraduado" class="text-danger"
-            style="display: none;">La calle solo debe contener letras y
-            espacios.</p>
-        </div>
-        <div class="mb-3">
-          <label for="numeroGraduado" class="form-label">Número</label>
-          <input type="number" class="form-control" id="numeroGraduado"
-            required>
-          <p id="errorNumeroGraduado" class="text-danger"
-            style="display: none;">El número es requerido.</p>
-        </div>
-        <div class="mb-3">
-          <label for="pisoGraduado" class="form-label">Piso</label>
-          <input type="text" class="form-control" id="pisoGraduado">
-        </div>
-        <div class="mb-3">
-          <label for="codigoPostalGraduado" class="form-label">Código
-            Postal</label>
-          <input type="text" class="form-control"
-            id="codigoPostalGraduado" required pattern="^\d{5}$">
-          <p id="errorCodigoPostalGraduado" class="text-danger"
-            style="display: none;">El código postal debe ser un número de
-            5 dígitos.</p>
-        </div>
-        <div class="mb-3">
-          <label for="provinciaGraduado"
-            class="form-label">Provincia</label>
-          <input type="text" class="form-control" id="provinciaGraduado"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorProvinciaGraduado" class="text-danger"
-            style="display: none;">La provincia solo debe contener letras
-            y espacios.</p>
-        </div>
-        
-        <div class="mb-3">
-          <label for="localidadGraduado"
-            class="form-label">Localidad</label>
-          <input type="text" class="form-control" id="localidadGraduado"
-            required pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$">
-          <p id="errorLocalidadGraduado" class="text-danger"
-            style="display: none;">La localidad solo debe contener letras
-            y espacios.</p>
-        </div>
-
-        <!-- Fecha de graduación -->
-        <div class="mb-3">
-          <label for="fechaGraduacion" class="form-label">Fecha de
-            Graduación</label>
-          <input type="date" class="form-control" id="fechaGraduacion"
-            required>
-          <p id="errorFechaGraduacion" class="text-danger"
-            style="display: none;">Fecha inválida.</p>
-        </div>
-
-        <!-- Título -->
-        <div class="mb-3">
-          <label for="titulo" class="form-label">Título</label>
-          <input type="text" class="form-control" id="titulo" required>
-          <p id="errorTitulo" class="text-danger"
-            style="display: none;">El título es requerido.</p>
-        </div>
-
-        <!-- Botón de Enviar -->
-        <button type="submit" class="btn btn-success">Añadir Estudiante
-          Graduado</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal para añadir asignatura -->
-<div class="modal fade" id="modalAñadirAsignatura" tabindex="-1"
-aria-labelledby="modalAñadirAsignaturaLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalAñadirAsignaturaLabel">Añadir
-        Asignatura</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formAñadirAsignatura" novalidate>
-        <div class="mb-3">
-          <label for="idEstudianteMatricular" class="form-label">ID del
-            Estudiante</label>
-          <input type="number" class="form-control"
-            id="idEstudianteMatricular" required min="1">
-          <p id="errorIdEstudianteMatricular" class="text-danger"
-            style="display: none;">
-            El ID debe ser un número positivo válido.
-          </p>
-        </div>
-
-        <div class="mb-3">
-          <label for="nombreAsignaturaMatricular"
-            class="form-label">Nombre de la Asignatura</label>
-          <input type="text" class="form-control"
-            id="nombreAsignaturaMatricular" required
-            pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ IVXLCDMivxlcdm]+$">
-          <p id="errorNombreAsignaturaMatricular" class="text-danger"
-            style="display: none;">
-            Nombre de la asignatura no válido.
-          </p>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Matricular
-          Asignatura</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal para añadir calificación -->
-<div class="modal fade" id="modalAñadirCalificacion" tabindex="-1"
-aria-labelledby="modalAñadirCalificacionLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalAñadirCalificacionLabel">Añadir
-        Calificación</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Close"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formAñadirCalificacion" novalidate>
-        <div class="mb-3">
-          <label for="idEstudianteCalificar" class="form-label">ID del
-            Estudiante</label>
-          <input type="number" class="form-control"
-            id="idEstudianteCalificar" required min="1">
-          <p id="errorIdEstudianteCalificar" class="text-danger"
-            style="display: none;">
-            El ID debe ser un número positivo válido.
-          </p>
-        </div>
-        <div class="mb-3">
-          <label for="nombreAsignaturaCalificar" class="form-label">Nombre
-            de la Asignatura</label>
-          <input type="text" class="form-control"
-            id="nombreAsignaturaCalificar" required
-            pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ IVXLCDMivxlcdm]+$">
-          <p id="errorNombreAsignaturaCalificar" class="text-danger"
-            style="display: none;">
-            Nombre de la asignatura no válido.
-          </p>
-        </div>
-        <div class="mb-3">
-          <label for="calificacion" class="form-label">Calificación (0 a
-            10)</label>
-          <input type="number" class="form-control" id="calificacion"
-            min="0" max="10" step="0.1" required>
-        </div>
-        <p id="errorCalificacion" class="text-danger"
-          style="display: none;">
-          La calificación debe estar entre 0 y 10.
-        </p>
-        <button type="submit" class="btn btn-primary">Añadir
-          Calificación</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal para eliminar estudiante -->
-<div class="modal fade" id="modalEliminarEstudiante" tabindex="-1"
-aria-labelledby="modalEliminarEstudianteLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalEliminarEstudianteLabel">Eliminar
-        Estudiante</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formEliminarEstudiante">
-        <div class="mb-3">
-          <label for="idEstudianteEliminar" class="form-label">Selecciona
-            un estudiante:</label>
-          <select id="idEstudianteEliminar" class="form-select" required>
-            <option value>Seleccione un estudiante...</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-danger">Eliminar
-          Estudiante</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-
-<!-- Modal para eliminar asignatura -->
-<div class="modal fade" id="modalEliminarAsignatura" tabindex="-1"
-aria-labelledby="modalEliminarAsignaturaLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalEliminarAsignaturaLabel">Eliminar
-        Asignatura</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formEliminarAsignatura">
-        <div class="mb-3">
-          <label for="idEstudianteEliminar" class="form-label">Selecciona
-            un estudiante:</label>
-          <select id="idEstudianteEliminar" class="form-select" required>
-            <option value>Seleccione un estudiante...</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="asignaturaEliminar" class="form-label">Selecciona la
-            asignatura:</label>
-          <select id="asignaturaEliminar" class="form-select" required>
-            <option value>Seleccione una asignatura...</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-danger">Eliminar
-          Asignatura</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-<!-- Modal para eliminar calificación -->
-<div class="modal fade" id="modalEliminarCalificacion" tabindex="-1"
-aria-labelledby="modalEliminarCalificacionLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalEliminarCalificacionLabel">Eliminar
-        Calificación</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formEliminarCalificacion">
-        <!-- Seleccionar estudiante -->
-        <div class="mb-3">
-          <label for="idEstudianteEliminarCalif"
-            class="form-label">Selecciona un estudiante:</label>
-          <select id="idEstudianteEliminarCalif" class="form-select"
-            required>
-            <option value>Seleccione un estudiante...</option>
-          </select>
-        </div>
-        <!-- Seleccionar asignatura -->
-        <div class="mb-3">
-          <label for="nombreAsignaturaEliminarCalif"
-            class="form-label">Selecciona una asignatura:</label>
-          <select id="nombreAsignaturaEliminarCalif" class="form-select"
-            required>
-            <option value>Seleccione una asignatura...</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-danger">Eliminar
-          Calificaciones</button>
-      </form>
-    </div>
-  </div>
-</div>
-</div>
-<!-- Modal para mostrar el promedio de un estudiante -->
-<div class="modal fade" id="modalMostrarPromedioEstudiante" tabindex="-1"
-aria-labelledby="modalMostrarPromedioLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalMostrarPromedioLabel">Promedio del
-        Estudiante</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formMostrarPromedio">
-        <!-- Seleccionar estudiante -->
-        <div class="mb-3">
-          <label for="idEstudiantePromedio" class="form-label">Selecciona
-            un estudiante:</label>
-          <select id="idEstudiantePromedio" class="form-select" required>
-            <option value>Seleccione un estudiante...</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary">Calcular
-          Promedio</button>
-      </form>
-      <hr>
-      <!-- Resultado del promedio -->
-      <h5 class="text-center">Promedio:</h5>
-      <p id="resultadoPromedio" class="text-center fw-bold fs-4"></p>
-    </div>
-  </div>
-</div>
-</div>
-<!-- Modal para calcular el promedio de una asignatura -->
-<div class="modal fade" id="modalPromedioAsignatura" tabindex="-1"
-aria-labelledby="modalPromedioAsignaturaLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalPromedioAsignaturaLabel">Promedio
-        de la Asignatura</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <form id="formPromedioAsignatura">
-        <!-- Campo de entrada para la asignatura -->
-        <div class="mb-3">
-          <label for="nombreAsignaturaPromedio" class="form-label">Nombre
-            de la Asignatura:</label>
-          <input type="text" class="form-control"
-            id="nombreAsignaturaPromedio" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Calcular
-          Promedio</button>
-      </form>
-      <hr>
-      <!-- Resultado del promedio -->
-      <h5 class="text-center">Promedio:</h5>
-      <p id="resultadoPromedioAsignatura"
-        class="text-center fw-bold fs-4"></p>
-    </div>
-  </div>
-</div>
-</div>
-<!-- Modal para calcular el promedio general -->
-<div class="modal fade" id="modalPromedioGeneral" tabindex="-1"
-aria-labelledby="modalPromedioGeneralLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalPromedioGeneralLabel">Promedio
-        General</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body text-center">
-      <button id="btnCalcularPromedioGeneral"
-        class="btn btn-primary">Calcular Promedio General</button>
-      <hr>
-      <!-- Resultado del promedio -->
-      <h5>Promedio General:</h5>
-      <p id="resultadoPromedioGeneral" class="fw-bold fs-4"></p>
-    </div>
-  </div>
-</div>
-</div>
-<!-- Modal para buscar estudiante -->
-<div class="modal fade" id="modalBuscarEstudiante" tabindex="-1"
-aria-labelledby="modalBuscarEstudianteLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalBuscarEstudianteLabel">Buscar
-        Estudiante</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <!-- Campo para ingresar el patrón de búsqueda -->
-      <div class="mb-3">
-        <label for="patronBusquedaEstudiante" class="form-label">Patrón de
-          búsqueda</label>
-        <input type="text" class="form-control"
-          id="patronBusquedaEstudiante"
-          placeholder="Introduce el nombre o parte del nombre">
       </div>
-      
-
-      <!-- Botón para buscar -->
-      <button id="btnBuscarEstudiante"
-        class="btn btn-primary">Buscar</button>
-
-      <!-- Resultados de búsqueda -->
-      <hr>
-      <h6>Resultados:</h6>
-      <ul id="resultadosBusquedaEstudiante" class="list-group">
-        <!-- Los resultados de los estudiantes se mostrarán aquí -->
-      </ul>
     </div>
-  </div>
-</div>
-</div>
 
-<!-- Modal para buscar estudiante graduado -->
-<div class="modal fade" id="modalBuscarEstudianteGraduado" tabindex="-1"
-aria-labelledby="modalBuscarEstudianteGraduadoLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title"
-        id="modalBuscarEstudianteGraduadoLabel">Buscar Estudiante
-        Graduado</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <!-- Campo para ingresar el patrón de búsqueda -->
-      <div class="mb-3">
-        <label for="patronBusquedaGraduado" class="form-label">Patrón de
-          búsqueda</label>
-        <input type="text" class="form-control"
-          id="patronBusquedaGraduado"
-          placeholder="Introduce el nombre o parte del nombre">
+    <!-- Modal para Añadir Estudiante Graduado -->
+    <div class="modal fade" id="modalAñadirEstudianteGraduado" tabindex="-1"
+      aria-labelledby="modalAñadirEstudianteGraduadoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"
+              id="modalAñadirEstudianteGraduadoLabel">Añadir Estudiante
+              Graduado</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAñadirEstudianteGraduado" novalidate>
+
+              <!-- Paso 1: Datos Personales -->
+              <div class="form-step" id="step-1">
+                <h5>Paso 1: Datos Personales</h5>
+                <div class="mb-3">
+                  <label for="nombreGraduado" class="form-label">Nombre del
+                    Graduado</label>
+                  <input type="text" class="form-control" id="nombreGraduado"
+                    required
+                    pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorNombreGraduado">
+                  <p id="errorNombreGraduado" class="text-danger"
+                    style="display: none;">El nombre solo
+                    debe contener letras y espacios.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="edadGraduado" class="form-label">Edad</label>
+                  <input type="number" class="form-control" id="edadGraduado"
+                    required min="0" max="130"
+                    data-error="errorEdadGraduado">
+                  <p id="errorEdadGraduado" class="text-danger"
+                    style="display: none;">La edad debe estar entre 0 y 130.</p>
+                </div>
+                <button type="button" class="btn btn-primary next-step"
+                  data-step="2">Siguiente</button>
+              </div>
+
+              <!-- Paso 2: Dirección -->
+              <div class="form-step d-none" id="step-2">
+                <h5>Paso 2: Dirección</h5>
+                <div class="mb-3">
+                  <label for="calleGraduado" class="form-label">Calle</label>
+                  <input type="text" class="form-control" id="calleGraduado"
+                    required
+                    pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorCalleGraduado">
+                  <p id="errorCalleGraduado" class="text-danger"
+                    style="display: none;">La calle solo
+                    debe contener letras y espacios.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="numeroGraduado" class="form-label">Número</label>
+                  <input type="number" class="form-control" id="numeroGraduado"
+                    required
+                    data-error="errorNumeroGraduado">
+                  <p id="errorNumeroGraduado" class="text-danger"
+                    style="display: none;">El número es
+                    requerido.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="pisoGraduado" class="form-label">Piso</label>
+                  <input type="text" class="form-control" id="pisoGraduado">
+                </div>
+                <div class="mb-3">
+                  <label for="codigoPostalGraduado" class="form-label">Código
+                    Postal</label>
+                  <input type="text" class="form-control"
+                    id="codigoPostalGraduado" required minlength="5"
+                    maxlength="5" data-error="errorCodigoPostalGraduado">
+                  <p id="errorCodigoPostalGraduado" class="text-danger"
+                    style="display: none;">El código
+                    postal debe ser un número de 5 dígitos.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="provinciaGraduado"
+                    class="form-label">Provincia</label>
+                  <input type="text" class="form-control" id="provinciaGraduado"
+                    required
+                    pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorProvinciaGraduado">
+                  <p id="errorProvinciaGraduado" class="text-danger"
+                    style="display: none;">La provincia
+                    solo debe contener letras y espacios.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="localidadGraduado"
+                    class="form-label">Localidad</label>
+                  <input type="text" class="form-control" id="localidadGraduado"
+                    required
+                    pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ\s]+$"
+                    data-error="errorLocalidadGraduado">
+                  <p id="errorLocalidadGraduado" class="text-danger"
+                    style="display: none;">La localidad
+                    solo debe contener letras y espacios.</p>
+                </div>
+                <button type="button" class="btn btn-secondary prev-step"
+                  data-step="1">Atrás</button>
+                <button type="button" class="btn btn-primary next-step"
+                  data-step="3">Siguiente</button>
+              </div>
+
+              <!-- Paso 3: Información de Graduación -->
+              <div class="form-step d-none" id="step-3">
+                <h5>Paso 3: Información de Graduación</h5>
+                <div class="mb-3">
+                  <label for="fechaGraduacion" class="form-label">Fecha de
+                    Graduación</label>
+                  <input type="date" class="form-control" id="fechaGraduacion"
+                    required
+                    data-error="errorFechaGraduacion">
+                  <p id="errorFechaGraduacion" class="text-danger"
+                    style="display: none;">Fecha no válida.</p>
+                </div>
+                <div class="mb-3">
+                  <label for="titulo" class="form-label">Título</label>
+                  <input type="text" class="form-control" id="titulo" required
+                    data-error="errorTitulo">
+                  <p id="errorTitulo" class="text-danger"
+                    style="display: none;">El título es requerido.</p>
+                </div>
+                <button type="button" class="btn btn-secondary prev-step"
+                  data-step="2">Atrás</button>
+                <button type="submit" class="btn btn-success">Añadir Estudiante
+                  Graduado</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
       </div>
-
-      <!-- Botón para buscar -->
-      <button id="btnBuscarEstudianteGraduado"
-        class="btn btn-primary">Buscar</button>
-
-      <!-- Resultados de búsqueda -->
-      <hr>
-      <h6>Resultados:</h6>
-      <ul id="resultadosBusquedaGraduado" class="list-group">
-        <!-- Los resultados de los estudiantes graduados se mostrarán aquí -->
-      </ul>
     </div>
-  </div>
-</div>
-</div>
-<!-- Modal para buscar asignatura -->
-<div class="modal fade" id="modalBuscarAsignatura" tabindex="-1"
-aria-labelledby="modalBuscarAsignaturaLabel" aria-hidden="true">
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="modalBuscarAsignaturaLabel">Buscar
-        Asignatura</h5>
-      <button type="button" class="btn-close" data-bs-dismiss="modal"
-        aria-label="Cerrar"></button>
-    </div>
-    <div class="modal-body">
-      <!-- Campo para ingresar el ID del estudiante -->
-      <div class="mb-3">
-        <label for="idEstudianteBuscarAsig" class="form-label">ID del
-          Estudiante</label>
-        <input type="number" class="form-control"
-          id="idEstudianteBuscarAsig"
-          placeholder="Introduce el ID del estudiante">
+
+    <!-- Modal para añadir asignatura -->
+    <div class="modal fade" id="modalAñadirAsignatura" tabindex="-1"
+      aria-labelledby="modalAñadirAsignaturaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAñadirAsignaturaLabel">Añadir
+              Asignatura</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAñadirAsignatura" novalidate>
+              <div class="mb-3">
+                <label for="idEstudianteMatricular" class="form-label">ID del
+                  Estudiante</label>
+                <input type="number" class="form-control"
+                  id="idEstudianteMatricular" required min="1">
+                <p id="errorIdEstudianteMatricular" class="text-danger"
+                  style="display: none;">
+                  El ID debe ser un número positivo válido.
+                </p>
+              </div>
+
+              <div class="mb-3">
+                <label for="nombreAsignaturaMatricular"
+                  class="form-label">Nombre de la Asignatura</label>
+                <input type="text" class="form-control"
+                  id="nombreAsignaturaMatricular" required
+                  pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ IVXLCDMivxlcdm]+$">
+                <p id="errorNombreAsignaturaMatricular" class="text-danger"
+                  style="display: none;">
+                  Nombre de la asignatura no válido.
+                </p>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Matricular
+                Asignatura</button>
+            </form>
+          </div>
+        </div>
       </div>
-
-      <!-- Campo para ingresar el patrón de búsqueda para la asignatura -->
-      <div class="mb-3">
-        <label for="patronBusquedaAsignatura" class="form-label">Patrón de
-          búsqueda para la asignatura</label>
-        <input type="text" class="form-control"
-          id="patronBusquedaAsignatura"
-          placeholder="Introduce el nombre o parte del nombre de la asignatura">
-      </div>
-
-      <!-- Botón para buscar -->
-      <button id="btnBuscarAsignatura" class="btn btn-primary">Buscar
-        Asignatura</button>
-
-      <!-- Resultados de búsqueda -->
-      <hr>
-      <h6>Resultados:</h6>
-      <ul id="resultadosBusquedaAsignatura" class="list-group">
-        <!-- Los resultados de las asignaturas se mostrarán aquí -->
-      </ul>
     </div>
-  </div>
-</div>
-</div>
-    
-</body>
+
+    <!-- Modal para añadir calificación -->
+    <div class="modal fade" id="modalAñadirCalificacion" tabindex="-1"
+      aria-labelledby="modalAñadirCalificacionLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalAñadirCalificacionLabel">Añadir
+              Calificación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAñadirCalificacion" novalidate>
+              <div class="mb-3">
+                <label for="idEstudianteCalificar" class="form-label">ID del
+                  Estudiante</label>
+                <input type="number" class="form-control"
+                  id="idEstudianteCalificar" required min="1">
+                <p id="errorIdEstudianteCalificar" class="text-danger"
+                  style="display: none;">
+                  El ID debe ser un número positivo válido.
+                </p>
+              </div>
+              <div class="mb-3">
+                <label for="nombreAsignaturaCalificar" class="form-label">Nombre
+                  de la Asignatura</label>
+                <input type="text" class="form-control"
+                  id="nombreAsignaturaCalificar" required
+                  pattern="^[a-zA-ZáéíóúüÁÉÍÓÚÜ IVXLCDMivxlcdm]+$">
+                <p id="errorNombreAsignaturaCalificar" class="text-danger"
+                  style="display: none;">
+                  Nombre de la asignatura no válido.
+                </p>
+              </div>
+              <div class="mb-3">
+                <label for="calificacion" class="form-label">Calificación (0 a
+                  10)</label>
+                <input type="number" class="form-control" id="calificacion"
+                  min="0" max="10" step="0.1" required>
+              </div>
+              <p id="errorCalificacion" class="text-danger"
+                style="display: none;">
+                La calificación debe estar entre 0 y 10.
+              </p>
+              <button type="submit" class="btn btn-primary">Añadir
+                Calificación</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para eliminar estudiante -->
+    <div class="modal fade" id="modalEliminarEstudiante" tabindex="-1"
+      aria-labelledby="modalEliminarEstudianteLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEliminarEstudianteLabel">Eliminar
+              Estudiante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formEliminarEstudiante">
+              <div class="mb-3">
+                <label for="idEstudianteEliminar" class="form-label">Selecciona
+                  un estudiante:</label>
+                <select id="idEstudianteEliminar" class="form-select" required>
+                  <option value>Seleccione un estudiante...</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-danger">Eliminar
+                Estudiante</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para eliminar asignatura -->
+    <div class="modal fade" id="modalEliminarAsignatura" tabindex="-1"
+      aria-labelledby="modalEliminarAsignaturaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEliminarAsignaturaLabel">Eliminar
+              Asignatura</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formEliminarAsignatura">
+              <div class="mb-3">
+                <label for="idEstudianteEliminar" class="form-label">Selecciona
+                  un estudiante:</label>
+                <select id="idEstudianteEliminar" class="form-select" required>
+                  <option value>Seleccione un estudiante...</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="asignaturaEliminar" class="form-label">Selecciona la
+                  asignatura:</label>
+                <select id="asignaturaEliminar" class="form-select" required>
+                  <option value>Seleccione una asignatura...</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-danger">Eliminar
+                Asignatura</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para eliminar calificación -->
+    <div class="modal fade" id="modalEliminarCalificacion" tabindex="-1"
+      aria-labelledby="modalEliminarCalificacionLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEliminarCalificacionLabel">Eliminar
+              Calificación</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formEliminarCalificacion">
+              <!-- Seleccionar estudiante -->
+              <div class="mb-3">
+                <label for="idEstudianteEliminarCalif"
+                  class="form-label">Selecciona un estudiante:</label>
+                <select id="idEstudianteEliminarCalif" class="form-select"
+                  required>
+                  <option value>Seleccione un estudiante...</option>
+                </select>
+              </div>
+              <!-- Seleccionar asignatura -->
+              <div class="mb-3">
+                <label for="nombreAsignaturaEliminarCalif"
+                  class="form-label">Selecciona una asignatura:</label>
+                <select id="nombreAsignaturaEliminarCalif" class="form-select"
+                  required>
+                  <option value>Seleccione una asignatura...</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-danger">Eliminar
+                Calificaciones</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para mostrar el promedio de un estudiante -->
+    <div class="modal fade" id="modalMostrarPromedioEstudiante" tabindex="-1"
+      aria-labelledby="modalMostrarPromedioLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalMostrarPromedioLabel">Promedio del
+              Estudiante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formMostrarPromedio">
+              <!-- Seleccionar estudiante -->
+              <div class="mb-3">
+                <label for="idEstudiantePromedio" class="form-label">Selecciona
+                  un estudiante:</label>
+                <select id="idEstudiantePromedio" class="form-select" required>
+                  <option value>Seleccione un estudiante...</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Calcular
+                Promedio</button>
+            </form>
+            <hr>
+            <!-- Resultado del promedio -->
+            <h5 class="text-center">Promedio:</h5>
+            <p id="resultadoPromedio" class="text-center fw-bold fs-4"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para calcular el promedio de una asignatura -->
+    <div class="modal fade" id="modalPromedioAsignatura" tabindex="-1"
+      aria-labelledby="modalPromedioAsignaturaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalPromedioAsignaturaLabel">Promedio
+              de la Asignatura</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formPromedioAsignatura">
+              <!-- Campo de entrada para la asignatura -->
+              <div class="mb-3">
+                <label for="nombreAsignaturaPromedio" class="form-label">Nombre
+                  de la Asignatura:</label>
+                <input type="text" class="form-control"
+                  id="nombreAsignaturaPromedio" required>
+              </div>
+              <button type="submit" class="btn btn-primary">Calcular
+                Promedio</button>
+            </form>
+            <hr>
+            <!-- Resultado del promedio -->
+            <h5 class="text-center">Promedio:</h5>
+            <p id="resultadoPromedioAsignatura"
+              class="text-center fw-bold fs-4"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para calcular el promedio general -->
+    <div class="modal fade" id="modalPromedioGeneral" tabindex="-1"
+      aria-labelledby="modalPromedioGeneralLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalPromedioGeneralLabel">Promedio
+              General</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body text-center">
+            <button id="btnCalcularPromedioGeneral"
+              class="btn btn-primary">Calcular Promedio General</button>
+            <hr>
+            <!-- Resultado del promedio -->
+            <h5>Promedio General:</h5>
+            <p id="resultadoPromedioGeneral" class="fw-bold fs-4"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para buscar estudiante -->
+    <div class="modal fade" id="modalBuscarEstudiante" tabindex="-1"
+      aria-labelledby="modalBuscarEstudianteLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalBuscarEstudianteLabel">Buscar
+              Estudiante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Campo para ingresar el patrón de búsqueda -->
+            <div class="mb-3">
+              <label for="patronBusquedaEstudiante" class="form-label">Patrón de
+                búsqueda</label>
+              <input type="text" class="form-control"
+                id="patronBusquedaEstudiante"
+                placeholder="Introduce el nombre o parte del nombre">
+            </div>
+
+            <!-- Botón para buscar -->
+            <button id="btnBuscarEstudiante"
+              class="btn btn-primary">Buscar</button>
+
+            <!-- Resultados de búsqueda -->
+            <hr>
+            <h6>Resultados:</h6>
+            <ul id="resultadosBusquedaEstudiante" class="list-group">
+              <!-- Los resultados de los estudiantes se mostrarán aquí -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para buscar estudiante graduado -->
+    <div class="modal fade" id="modalBuscarEstudianteGraduado" tabindex="-1"
+      aria-labelledby="modalBuscarEstudianteGraduadoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"
+              id="modalBuscarEstudianteGraduadoLabel">Buscar Estudiante
+              Graduado</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Campo para ingresar el patrón de búsqueda -->
+            <div class="mb-3">
+              <label for="patronBusquedaGraduado" class="form-label">Patrón de
+                búsqueda</label>
+              <input type="text" class="form-control"
+                id="patronBusquedaGraduado"
+                placeholder="Introduce el nombre o parte del nombre">
+            </div>
+
+            <!-- Botón para buscar -->
+            <button id="btnBuscarEstudianteGraduado"
+              class="btn btn-primary">Buscar</button>
+
+            <!-- Resultados de búsqueda -->
+            <hr>
+            <h6>Resultados:</h6>
+            <ul id="resultadosBusquedaGraduado" class="list-group">
+              <!-- Los resultados de los estudiantes graduados se mostrarán aquí -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para buscar asignatura -->
+    <div class="modal fade" id="modalBuscarAsignatura" tabindex="-1"
+      aria-labelledby="modalBuscarAsignaturaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalBuscarAsignaturaLabel">Buscar
+              Asignatura</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+              aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Campo para ingresar el ID del estudiante -->
+            <div class="mb-3">
+              <label for="idEstudianteBuscarAsig" class="form-label">ID del
+                Estudiante</label>
+              <input type="number" class="form-control"
+                id="idEstudianteBuscarAsig"
+                placeholder="Introduce el ID del estudiante">
+            </div>
+
+            <!-- Campo para ingresar el patrón de búsqueda para la asignatura -->
+            <div class="mb-3">
+              <label for="patronBusquedaAsignatura" class="form-label">Patrón de
+                búsqueda para la asignatura</label>
+              <input type="text" class="form-control"
+                id="patronBusquedaAsignatura"
+                placeholder="Introduce el nombre o parte del nombre de la asignatura">
+            </div>
+
+            <!-- Botón para buscar -->
+            <button id="btnBuscarAsignatura" class="btn btn-primary">Buscar
+              Asignatura</button>
+
+            <!-- Resultados de búsqueda -->
+            <hr>
+            <h6>Resultados:</h6>
+            <ul id="resultadosBusquedaAsignatura" class="list-group">
+              <!-- Los resultados de las asignaturas se mostrarán aquí -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
 </html>
-
