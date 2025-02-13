@@ -34,7 +34,7 @@ function guardarListaEstudiantes() {
 function cargarListaEstudiantes() {
     const estudiantesGuardados = localStorage.getItem('listaEstudiantes');
 
-    if (!estudiantesGuardados) { 
+    if (!estudiantesGuardados) {     
         const estudiantes = JSON.parse(estudiantesGuardados).map(est => {
             if (!est.direccion) {
                 alert(`El estudiante con ID ${est.id} no tiene una dirección definida.`);
