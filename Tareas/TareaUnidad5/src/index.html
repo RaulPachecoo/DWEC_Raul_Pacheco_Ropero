@@ -12,15 +12,7 @@
       defer></script>
     <script src="js/script.js" defer type="module" ></script>
     <link rel="stylesheet" href="estilos/styles.css">
-    <script>
-      // Cargar los modales desde la carpeta html/modals.html
-      fetch('html/modals.html')
-        .then(response => response.text())
-        .then(html => {
-          document.getElementById('contenedorModales').innerHTML = html;
-        })
-        .catch(error => console.error('Error cargando los modales:', error));
-    </script>
+    
 
   </head>
   <body>
