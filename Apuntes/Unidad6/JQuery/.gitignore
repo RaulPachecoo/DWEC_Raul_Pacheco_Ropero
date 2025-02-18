@@ -1,0 +1,14 @@
+# Dependencias de Node.js
+node_modules/
+package-lock.json
+
+# Archivos de Parcel
+.cache/
+dist/
+
+# Configuración del entorno
+.env
+.DS_Store
+
+# Archivos del sistema
+Thumbs.db

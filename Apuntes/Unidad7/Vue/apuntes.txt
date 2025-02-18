@@ -1,0 +1,28 @@
+framework de JS
+2014
+
+
+Reutilizar
+
+React
+Vue
+Angular
+
+
+---
+Vue
+-reutilización
+    HTML -> Estructura
+    JS -> Comportamiento
+    CSS -> Presentación
+
+    Un mismo fich -> html, js y CSS
+    Componentes Botón HTML JS CSS
+
+-Directivas -> interactividad
+-Enrutamiento
+
+---
+Uso de vue
+
+SFC

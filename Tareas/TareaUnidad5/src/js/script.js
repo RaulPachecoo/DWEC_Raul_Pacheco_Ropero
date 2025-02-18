@@ -284,7 +284,7 @@ function inicializarEventos() {
             // Si el paso actual es válido, muestra el siguiente paso y avanza en el historial
             if (validarPaso(currentStep, formId)) {
                 showStep(nextStep, formId);
-                history.go(1); // Avanza un paso en el historial
+                history.pushState({ step: nextStep, formId: formId }, "", `?step=${nextStep}&formId=${formId}`); // Avanza un paso en el historial
             }
         });
     });
@@ -292,10 +292,10 @@ function inicializarEventos() {
     // Evento de los botones de anterior
     prevButtons.forEach((button) => {
         button.addEventListener("click", function () {
-            const step = this.getAttribute("data-step"); // Obtiene el paso actual
+            const step = parseInt(this.getAttribute("data-step")); // Obtiene el paso actual
             const formId = this.closest("form").id; // Obtiene el ID del formulario
             showStep(step, formId); // Muestra el paso anterior
-            history.go(-1); // Retrocede un paso en el historial
+            history.pushState({ step: step, formId: formId }, "", `?step=${step}&formId=${formId}`); // Retrocede un paso en el historial
         });
     });
 
